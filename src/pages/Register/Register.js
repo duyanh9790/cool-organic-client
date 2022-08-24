@@ -1,13 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-
-import { facebookBtn, googleBtn } from '../../assets/images/socials';
-
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import useSearchParams from './../../hooks/useSearchParams';
+import authApi from './../../api/authApi';
+import { setCurrentUser } from '../../redux/userSlice';
+import Loading from '../../components/Loading';
+import handleLocalStorage from '../../utils/handleLocalStorage';
+import handleAuthToken from './../../utils/handleAuthToken';
+
+import { facebookBtn, googleBtn } from '../../assets/images/socials';
 
 const Register = () => {
+  const [loading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const searchParams = useSearchParams();
+
   const schema = yup.object({
     fullName: yup.string().required('Họ tên là bắt buộc'),
     email: yup
@@ -18,13 +33,20 @@ const Register = () => {
       .string()
       .required('Mật khẩu là bắt buộc')
       .min(8, 'Mật khẩu phải tối thiểu 8 kí tự'),
-    confirmPassword: yup.string().required('Vui lòng nhập lại mật khẩu'),
+    confirmPassword: yup
+      .string()
+      .oneOf(
+        [yup.ref('password'), null],
+        'Mật khẩu không trùng khớp. Hãy thử lại'
+      )
+      .required('Nhập lại mật khẩu Không được để trống'),
   });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: {
       fullName: '',
@@ -35,11 +57,46 @@ const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleRegister = (values) => {
-    console.log(values);
-  };
+  const handleRegister = async (values) => {
+    setIsLoading(true);
+    if (!values) return;
 
-  console.log('errors: ', errors);
+    try {
+      const res = await authApi.register(values);
+      if (!res.data.success) {
+        toast.error(res.data.message);
+        reset({
+          password: '',
+          confirmPassword: '',
+        });
+        return;
+      }
+      dispatch(
+        setCurrentUser({
+          currentUser: res.data.user,
+        })
+      );
+      handleLocalStorage('set', 'accessToken', res.data.accessToken);
+      handleAuthToken(res.data.accessToken);
+      toast.success(res.data.message);
+
+      if (searchParams.get('redirect')) {
+        navigate(searchParams.get('redirect'));
+      } else {
+        navigate('/');
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response.data.message ||
+        'Có lỗi xảy ra phía máy chủ, vui lòng thử lại!';
+      toast.error(errorMessage);
+      reset({
+        password: '',
+        confirmPassword: '',
+      });
+    }
+    setIsLoading(false);
+  };
 
   return (
     <form
@@ -93,8 +150,17 @@ const Register = () => {
             {...register('password')}
             autoComplete='current-password'
           />
-          <span className='block text-left text-red-500 mt-1 ml-3'>
-            {errors.password?.message}
+          <span
+            className={`block text-left mt-1 ml-3 ${
+              errors.password?.message ? 'text-red-500' : 'text-textColor'
+            }`}
+          >
+            {errors.password?.message || (
+              <span>
+                <span className='text-red-500 font-bold'>*</span> Sử dụng từ 8
+                kí tự trở lên
+              </span>
+            )}
           </span>
         </div>
         <div>
@@ -112,9 +178,9 @@ const Register = () => {
         </div>
         <button
           type='submit'
-          className='block w-full text-white bg-gradient-to-r from-primary to-secondary py-4 rounded-full hover:bg-primary hover:bg-none '
+          className='flex items-center justify-center gap-3 w-full text-white bg-gradient-to-r from-primary to-secondary py-4 rounded-full hover:bg-primary hover:bg-none'
         >
-          Đăng ký
+          {loading && <Loading />} <span>Đăng ký</span>
         </button>
       </div>
 
