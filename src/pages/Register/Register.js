@@ -178,7 +178,7 @@ const Register = () => {
         </div>
         <button
           type='submit'
-          className='flex items-center justify-center gap-3 w-full text-white bg-gradient-to-r from-primary to-secondary py-4 rounded-full hover:bg-primary hover:bg-none'
+          className='gradient-primary flex items-center justify-center gap-3 w-full text-white py-4 rounded-full hover:bg-primaryColor hover:bg-none'
         >
           {loading && <Loading />} <span>Đăng ký</span>
         </button>

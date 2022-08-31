@@ -141,14 +141,14 @@ const Login = () => {
         </div>
         <button
           type='submit'
-          className='flex items-center justify-center gap-3 w-full text-white bg-gradient-to-r from-primary to-secondary py-4 rounded-full hover:bg-primary hover:bg-none'
+          className='gradient-primary flex items-center justify-center gap-3 w-full text-white py-4 rounded-full hover:bg-primaryColor hover:bg-none'
         >
           {loading && <Loading />} <span>Đăng nhập</span>
         </button>
       </div>
 
       <div>
-        <p className='underline text-primary text-[15px] cursor-pointer mt-4'>
+        <p className='underline text-primaryColor text-[15px] cursor-pointer mt-4'>
           Quên mật khẩu
         </p>
 

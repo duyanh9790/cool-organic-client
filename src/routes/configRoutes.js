@@ -5,6 +5,9 @@ import Cart from '../pages/Cart';
 import Admin from '../pages/Admin';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import Introduce from '../pages/Introduce';
+import Contact from '../pages/Contact';
+import NotFound from '../pages/NotFound';
 
 import { ADMIN_LAYOUT } from '../constants/layouts';
 
@@ -39,6 +42,18 @@ const routes = [
   {
     path: '/register',
     component: Register,
+  },
+  {
+    path: '/introduce',
+    component: Introduce,
+  },
+  {
+    path: '/contact',
+    component: Contact,
+  },
+  {
+    path: '/*',
+    component: NotFound,
   },
 ];
 
