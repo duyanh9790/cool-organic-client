@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import './GlobalStyles.scss';
 
 const GlobalStyles = ({ children }) => {
-  return <div>{children}</div>;
+  return <Fragment>{children}</Fragment>;
 };
 
 GlobalStyles.propTypes = {

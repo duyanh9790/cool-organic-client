@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import handleLocalStorage from './../utils/handleLocalStorage';
 
 const userSlice = createSlice({
   name: 'user',
@@ -10,6 +11,7 @@ const userSlice = createSlice({
       state.currentUser = action.payload;
     },
     removeCurrentUser: (state) => {
+      handleLocalStorage.remove('accessToken');
       state.currentUser = null;
     },
   },

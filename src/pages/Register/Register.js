@@ -76,7 +76,7 @@ const Register = () => {
           currentUser: res.data.user,
         })
       );
-      handleLocalStorage('set', 'accessToken', res.data.accessToken);
+      handleLocalStorage.set('accessToken', res.data.accessToken);
       handleAuthToken(res.data.accessToken);
       toast.success(res.data.message);
 
@@ -87,7 +87,7 @@ const Register = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response.data.message ||
+        error.response.data?.message ||
         'Có lỗi xảy ra phía máy chủ, vui lòng thử lại!';
       toast.error(errorMessage);
       reset({
@@ -105,7 +105,7 @@ const Register = () => {
     >
       <div className=''>
         <h3 className='uppercase text-[26px] mb-6'>Đăng ký tài khoản</h3>
-        <div className='flex gap-1 justify-center mb-7'>
+        <div className='flex justify-center gap-1 mb-7'>
           <div className='max-w-[129px] w-full hover:opacity-80 cursor-pointer'>
             <img src={facebookBtn} alt='Register with Facebook' />
           </div>
@@ -125,7 +125,7 @@ const Register = () => {
             {...register('fullName')}
             autoComplete='fullName'
           />
-          <span className='block text-left text-red-500 mt-1 ml-3'>
+          <span className='block mt-1 ml-3 text-left text-red-500'>
             {errors.fullName?.message}
           </span>
         </div>
@@ -138,7 +138,7 @@ const Register = () => {
             {...register('email')}
             autoComplete='email'
           />
-          <span className='block text-left text-red-500 mt-1 ml-3'>
+          <span className='block mt-1 ml-3 text-left text-red-500'>
             {errors.email?.message}
           </span>
         </div>
@@ -157,7 +157,7 @@ const Register = () => {
           >
             {errors.password?.message || (
               <span>
-                <span className='text-red-500 font-bold'>*</span> Sử dụng từ 8
+                <span className='font-bold text-red-500'>*</span> Sử dụng từ 8
                 kí tự trở lên
               </span>
             )}
@@ -172,13 +172,13 @@ const Register = () => {
             {...register('confirmPassword')}
             autoComplete='confirmPassword'
           />
-          <span className='block text-left text-red-500 mt-1 ml-3'>
+          <span className='block mt-1 ml-3 text-left text-red-500'>
             {errors.confirmPassword?.message}
           </span>
         </div>
         <button
           type='submit'
-          className='gradient-primary flex items-center justify-center gap-3 w-full text-white py-4 rounded-full hover:bg-primaryColor hover:bg-none'
+          className='flex items-center justify-center w-full gap-3 py-4 text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
         >
           {loading && <Loading />} <span>Đăng ký</span>
         </button>
@@ -188,7 +188,7 @@ const Register = () => {
         <p className='mt-6 text-textColor'>
           Bạn đã có tài khoản? vui lòng đăng nhập
           <Link to='/login'>
-            <span className='underline ml-1 '>tại đây</span>
+            <span className='ml-1 underline '>tại đây</span>
           </Link>
         </p>
       </div>

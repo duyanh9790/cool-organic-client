@@ -86,7 +86,7 @@ const Footer = () => {
       <div className='bg-[#e8dac7] py-[60px]'>
         <div className='container flex items-center justify-between'>
           <div className='w-[60%] pr-4'>
-            <h3 className='text-3xl text-left font-bold'>
+            <h3 className='text-3xl font-bold text-left'>
               Đăng kí nhận tin khuyến mãi
             </h3>
           </div>
@@ -94,15 +94,15 @@ const Footer = () => {
             <input
               type='text'
               placeholder='Nhập email của bạn'
-              className='border border-borderColor pl-4 w-full h-full rounded-full pr-28'
+              className='w-full h-full pl-4 border rounded-full border-borderColor pr-28'
             />
-            <button className='gradient-primary block absolute top-0 right-0 h-full px-6 text-white rounded-full text-sm hover:bg-primaryColor'>
+            <button className='absolute top-0 right-0 block h-full px-6 text-sm text-white rounded-full gradient-primary hover:bg-primaryColor'>
               Đăng ký
             </button>
           </div>
         </div>
       </div>
-      <div className='container grid grid-cols-4 gap-8 bg-white py-12'>
+      <div className='container grid grid-cols-4 gap-8 py-12 bg-white'>
         <div>
           <Link to='/' className='w-[195px] h-[63px] mb-6 block'>
             <img src={logo} alt='Logo' />
