@@ -9,6 +9,9 @@ module.exports = {
         borderColor: '#ebebeb',
         textColor: '#707070',
       },
+      screens: {
+        lg: '1025px',
+      },
     },
     container: {
       center: true,

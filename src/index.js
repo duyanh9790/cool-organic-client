@@ -4,6 +4,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 import './index.css';
 import App from './App';

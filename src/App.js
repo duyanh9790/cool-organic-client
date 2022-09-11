@@ -17,14 +17,13 @@ function App() {
       const accessToken = handleLocalStorage.get('accessToken');
       if (accessToken) {
         handleAuthToken(accessToken);
-        console.log('set auth token');
       }
       try {
-        const currentUser = await authApi.getCurrentUser();
-        if (!currentUser) {
+        const res = await authApi.getCurrentUser();
+        if (!res.data.user) {
           return;
         }
-        dispatch(setCurrentUser(currentUser));
+        dispatch(setCurrentUser(res.data.user));
       } catch (error) {
         removeCurrentUser();
       }
