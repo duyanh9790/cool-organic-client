@@ -58,12 +58,12 @@ const ProductListIntroduce = () => {
               <h3 className='mb-2.5 hover:text-primaryColor cursor-pointer text-2xl font-medium transition-all text-white'>
                 {product.name}
               </h3>
-              <p className='mb-12 leading-6 text-white'>
+              <p className='mb-12 text-sm leading-6 text-white'>
                 {product.description}
               </p>
               <Link
                 to='/'
-                className='text-white p-4 rounded-lg bg-[#27272f] hover:bg-primaryColor transition-all '
+                className='text-white p-4 rounded-lg bg-[#27272f] hover:bg-primaryColor transition-all text-sm'
               >
                 Xem ngay
               </Link>

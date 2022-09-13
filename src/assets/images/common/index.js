@@ -8,3 +8,4 @@ export { default as aboutUs1 } from './about-us-1.png';
 export { default as aboutUs2 } from './about-us-2.png';
 export { default as aboutUs3 } from './about-us-3.png';
 export { default as aboutUs4 } from './about-us-4.png';
+export { default as backgroundBreadCrumb } from './bg_breadcrumb.png';

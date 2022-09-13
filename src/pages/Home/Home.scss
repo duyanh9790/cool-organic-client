@@ -68,24 +68,9 @@
   }
 }
 
-.about-us {
-  .icon-green {
-    background-image: url('../../assets/images/common/icon-green.png');
-    background-repeat: no-repeat;
-    width: 69px;
-    height: 22px;
-  }
-  &-product-list {
-    margin-left: 8px;
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    > div {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-  }
+.icon-green {
+  background-image: url('../../assets/images/common/icon-green.png');
+  background-repeat: no-repeat;
+  width: 69px;
+  height: 22px;
 }
