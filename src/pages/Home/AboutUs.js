@@ -33,13 +33,13 @@ const listItems = [
 
 const AboutUs = () => {
   return (
-    <SectionHomeLayout className='about-us' title='Về chúng tôi'>
+    <SectionHomeLayout title='Về chúng tôi' path='/introduce'>
       <p className='mb-10 text-[#8b8b99] text-sm max-w-[840px] w-full mx-auto'>
         Hiện tại vùng nguyên liệu của chúng tôi có thể cung cấp các thực tập
         tươi sạch với số lượng lớn vì đang vào vụ mùa thu hoạch nên chúng tôi có
         thể cung ứng cho tất cả các đối tác xuất khẩu nông sản trên cả nước.
       </p>
-      <div className='scroll-snap-list'>
+      <div className='scroll-snap-list flex gap-8 justify-between'>
         {listItems.map((item, index) => (
           <div
             key={index}

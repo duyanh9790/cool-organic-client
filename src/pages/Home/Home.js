@@ -1,8 +1,9 @@
 import Banner from './Banner';
 import ProductListIntroduce from './ProductListIntroduce';
+import AboutUs from './AboutUs';
+import TopBrand from './TopBrand';
 
 import './Home.scss';
-import AboutUs from './AboutUs';
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Banner />
       <ProductListIntroduce />
       <AboutUs />
+      <TopBrand />
     </div>
   );
 };

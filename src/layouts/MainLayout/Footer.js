@@ -82,7 +82,7 @@ const footerItems = [
 
 const Footer = () => {
   return (
-    <div>
+    <div className='mt-14'>
       <div className='bg-[#e8dac7] py-[60px]'>
         <div className='container flex items-center justify-between'>
           <div className='w-[60%] pr-4'>
