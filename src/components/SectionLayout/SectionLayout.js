@@ -2,10 +2,10 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const SectionHomeLayout = ({ title, children, className, path = '/' }) => {
+const SectionLayout = ({ title, children, className = '', path = '/' }) => {
   return (
-    <div className={`container pt-14 text-center ${className}`}>
-      <h2 className='mb-5'>
+    <div className={`container pt-5 md:pt-8 lg:pt-12 text-center ${className}`}>
+      <h2 className='mb-3 md:mb-5'>
         <Link
           to={path}
           className='text-3xl font-medium uppercase text-gradient'
@@ -13,17 +13,17 @@ const SectionHomeLayout = ({ title, children, className, path = '/' }) => {
           {title}
         </Link>
       </h2>
-      <span className='inline-block icon-green mb-4'></span>
+      <span className='inline-block mb-2 md:mb-4 icon-green'></span>
       <div>{children}</div>
     </div>
   );
 };
 
-SectionHomeLayout.propTypes = {
+SectionLayout.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   path: PropTypes.string,
 };
 
-export default SectionHomeLayout;
+export default SectionLayout;

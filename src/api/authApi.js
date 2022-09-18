@@ -1,11 +1,11 @@
 import axiosClient from './axiosClient';
 
 const authApi = {
-  login: (params) => {
-    return axiosClient.post('/auth/login', params);
+  login: (data) => {
+    return axiosClient.post('/auth/login', data);
   },
-  register: (params) => {
-    return axiosClient.post('/auth/register', params);
+  register: (data) => {
+    return axiosClient.post('/auth/register', data);
   },
   getCurrentUser: () => {
     return axiosClient.get('/auth');

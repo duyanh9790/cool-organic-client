@@ -9,6 +9,7 @@
 html {
   line-height: 1;
   font-family: Quicksand, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -33,7 +34,7 @@ button {
 }
 
 .gradient-primary {
-  background: linear-gradient(to right, #91ad41 0%, #ff8a6c 100%);
+  background-image: linear-gradient(to right, #91ad41 0%, #ff8a6c 100%);
 }
 
 .text-gradient {

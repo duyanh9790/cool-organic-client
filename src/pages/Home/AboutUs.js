@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SectionHomeLayout from './SectionHomeLayout';
+import SectionLayout from '../../components/SectionLayout';
 import {
   aboutUs1,
   aboutUs2,
@@ -33,29 +33,31 @@ const listItems = [
 
 const AboutUs = () => {
   return (
-    <SectionHomeLayout title='Về chúng tôi' path='/introduce'>
-      <p className='mb-10 text-[#8b8b99] text-sm max-w-[840px] w-full mx-auto'>
+    <SectionLayout title='Về chúng tôi' path='/introduce'>
+      <p className='lg:mb-10 mb-6 md:mb-8  text-[#8b8b99] text-sm max-w-[840px] w-full mx-auto'>
         Hiện tại vùng nguyên liệu của chúng tôi có thể cung cấp các thực tập
         tươi sạch với số lượng lớn vì đang vào vụ mùa thu hoạch nên chúng tôi có
         thể cung ứng cho tất cả các đối tác xuất khẩu nông sản trên cả nước.
       </p>
-      <div className='scroll-snap-list flex gap-8 justify-between'>
+      <div className='flex justify-between gap-8 scroll-snap-list'>
         {listItems.map((item, index) => (
           <div
             key={index}
-            className='flex flex-col items-center scroll-snap-item'
+            className='flex flex-col items-center scroll-snap-item lg:w-[135px] w-[300px]'
           >
-            <div className='w-[135px] h-[127px]'>
+            <div className='lg:w-[135px] lg:h-[127px] w-[100px] h-[96px]'>
               <img src={item.imageUrl} alt='' />
             </div>
-            <h3 className='py-4 text-lg font-bold'>{item.title}</h3>
-            <p className='leading-6 text-textColor max-w-[280px] w-full text-sm'>
+            <h3 className='py-1 text-base font-bold lg:text-lg md:py-3 lg:py-4'>
+              {item.title}
+            </h3>
+            <p className='lg:leading-6 leading-4 text-textColor max-w-[280px] w-full md:text-sm text-xs'>
               {item.description}
             </p>
           </div>
         ))}
       </div>
-    </SectionHomeLayout>
+    </SectionLayout>
   );
 };
 

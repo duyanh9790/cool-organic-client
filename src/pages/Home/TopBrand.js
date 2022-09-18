@@ -1,6 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
+import SectionLayout from '../../components/SectionLayout';
 import {
   brand1,
   brand2,
@@ -9,7 +9,6 @@ import {
   brand5,
   brand6,
 } from '../../assets/images/common';
-import SectionHomeLayout from './SectionHomeLayout';
 
 const brandList = [
   {
@@ -40,19 +39,19 @@ const brandList = [
 
 const TopBrand = () => {
   return (
-    <SectionHomeLayout title='Top thương hiệu'>
-      <div className='scroll-snap-list container flex gap-14 lg:justify-center mx-3 lg:mx-auto mt-5'>
+    <SectionLayout title='Top thương hiệu'>
+      <div className='container flex mt-5 scroll-snap-list gap-14 lg:justify-center lg:mx-auto'>
         {brandList.map((brand, index) => (
           <Link
             key={index}
             to={brand.path}
-            className='scroll-snap-item hover:opacity-80 transition-all shrink-0'
+            className='transition-all scroll-snap-item hover:opacity-80 shrink-0'
           >
             <img src={brand.imageUrl} alt='' />
           </Link>
         ))}
       </div>
-    </SectionHomeLayout>
+    </SectionLayout>
   );
 };
 

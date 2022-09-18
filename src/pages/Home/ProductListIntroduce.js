@@ -46,7 +46,7 @@ const ProductListIntroduce = () => {
         {listProducts.map((product) => (
           <div
             key={product.id}
-            className='relative py-32 pl-12 pr-24 before before:invisible hover:before:visible before:bg-black before:absolute before:w-full before:h-full before:top-0 before:left-0 before:opacity-0 hover:before:opacity-50'
+            className='relative py-6 pl-5 pr-24 md:py-12 md:pl-8 lg:pl-12 lg:py-32 before before:invisible hover:before:visible before:bg-black before:absolute before:w-full before:h-full before:top-0 before:left-0 before:opacity-0 hover:before:opacity-50'
             style={{
               backgroundImage: `url(${product.imageUrl}`,
               backgroundSize: '50% auto',

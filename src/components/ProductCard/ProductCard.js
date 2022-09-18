@@ -7,7 +7,7 @@ import calculatePrice from '../../utils/calculatePrice';
 
 const ProductCard = ({ product }) => {
   return (
-    <div className='transition-all hover:shadow-xl rounded overflow-hidden'>
+    <div className='overflow-hidden transition-all border rounded hover:shadow-xl border-borderColor'>
       <Link
         to={`/products/${product.slug}`}
         className='flex items-center justify-center hover:opacity-60'
@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
             <span className='mr-2 text-base font-bold text-primaryColor'>
               {formatPrice(calculatePrice(product.price, product.discount))}
             </span>
-            <span className='font-bold line-through text-textColor text-sm'>
+            <span className='text-sm font-bold line-through text-textColor'>
               {formatPrice(product.price)}
             </span>
           </div>
