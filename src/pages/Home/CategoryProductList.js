@@ -68,7 +68,7 @@ const CategoryProductList = () => {
         ))}
       </div>
 
-      <div>
+      <div className='block md:hidden'>
         <div
           className='flex items-center justify-between px-3 py-2 border-2 rounded-full border-primaryColor'
           onClick={() => setShowMenuCategory((prev) => !prev)}

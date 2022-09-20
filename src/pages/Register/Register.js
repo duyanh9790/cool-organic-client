@@ -9,14 +9,14 @@ import { toast } from 'react-toastify';
 import useSearchParams from './../../hooks/useSearchParams';
 import authApi from './../../api/authApi';
 import { setCurrentUser } from '../../redux/userSlice';
-import Loading from '../../components/Loading';
+import { Loading } from '../../components/Loading';
 import handleLocalStorage from '../../utils/handleLocalStorage';
 import handleAuthToken from './../../utils/handleAuthToken';
 
 import { facebookBtn, googleBtn } from '../../assets/images/socials';
 
 const Register = () => {
-  const [loading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -180,7 +180,7 @@ const Register = () => {
           type='submit'
           className='flex items-center justify-center w-full gap-3 py-4 text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
         >
-          {loading && <Loading />} <span>Đăng ký</span>
+          {isLoading && <Loading />} <span>Đăng ký</span>
         </button>
       </div>
 
