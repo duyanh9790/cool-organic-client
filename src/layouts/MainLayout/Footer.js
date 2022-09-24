@@ -12,11 +12,11 @@ const footerItems = [
       },
       {
         name: 'Giới thiệu',
-        path: '/',
+        path: '/introduce',
       },
       {
         name: 'Sản phẩm',
-        path: '/',
+        path: '/products',
       },
       {
         name: 'Tin tức',
@@ -24,7 +24,7 @@ const footerItems = [
       },
       {
         name: 'Liên hệ',
-        path: '/',
+        path: '/contact',
       },
     ],
   },
@@ -37,11 +37,11 @@ const footerItems = [
       },
       {
         name: 'Giới thiệu',
-        path: '/',
+        path: '/introduce',
       },
       {
         name: 'Sản phẩm',
-        path: '/',
+        path: '/products',
       },
       {
         name: 'Tin tức',
@@ -49,7 +49,7 @@ const footerItems = [
       },
       {
         name: 'Liên hệ',
-        path: '/',
+        path: '/contact',
       },
     ],
   },
@@ -62,11 +62,11 @@ const footerItems = [
       },
       {
         name: 'Giới thiệu',
-        path: '/',
+        path: '/introduce',
       },
       {
         name: 'Sản phẩm',
-        path: '/',
+        path: '/products',
       },
       {
         name: 'Tin tức',
@@ -74,7 +74,7 @@ const footerItems = [
       },
       {
         name: 'Liên hệ',
-        path: '/',
+        path: '/contact',
       },
     ],
   },
@@ -83,27 +83,27 @@ const footerItems = [
 const Footer = () => {
   return (
     <div className='mt-14'>
-      <div className='bg-[#e8dac7] py-[60px]'>
-        <div className='container flex items-center justify-between'>
-          <div className='w-[60%] pr-4'>
-            <h3 className='text-3xl font-bold text-left'>
+      <div className='bg-[#e8dac7] py-10 md:py-14 lg:py-[3.75rem]'>
+        <div className='container flex flex-wrap items-center justify-between'>
+          <div className='lg:w-[60%] w-full pr-4 mb-5 lg:mb-0'>
+            <h3 className='text-3xl font-bold text-center lg:text-left'>
               Đăng kí nhận tin khuyến mãi
             </h3>
           </div>
-          <div className='relative h-11 w-[40%]'>
+          <div className='relative h-11 w-full lg:w-[40%]'>
             <input
               type='text'
               placeholder='Nhập email của bạn'
               className='w-full h-full pl-4 border rounded-full border-borderColor pr-28'
             />
-            <button className='absolute top-0 right-0 block h-full px-6 text-sm text-white rounded-full gradient-primary hover:bg-primaryColor'>
+            <button className='absolute top-0 right-0 block h-full px-6 text-sm text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'>
               Đăng ký
             </button>
           </div>
         </div>
       </div>
-      <div className='container grid grid-cols-4 gap-8 py-12 bg-white'>
-        <div>
+      <div className='container flex flex-wrap justify-between w-full py-4 text-center bg-white lg:py-12'>
+        <div className='w-full lg:w-[25%] mb-6 md:mb-10 lg:mb-0'>
           <Link to='/' className='w-[195px] h-[63px] mb-6 block'>
             <img src={logo} alt='Logo' />
           </Link>
@@ -111,7 +111,7 @@ const Footer = () => {
             <div className='w-[30px] flex-shrink-0 flex items-center justify-center mr-1'>
               <i className='fas fa-map-marker-alt text-primaryColor'></i>
             </div>
-            <p>
+            <p className='text-left'>
               Toà nhà Ladeco, 266 Đội Cấn, phường Liễu Giai, Quận Ba Đình, Hà
               Nội
             </p>
@@ -131,8 +131,11 @@ const Footer = () => {
         </div>
 
         {footerItems.map((footerItem, index) => (
-          <div key={index}>
-            <h3 className='mb-5 text-sm font-bold uppercase'>
+          <div
+            key={index}
+            className='text-center lg:text-left lg:w-[20%] md:w-[33.333333%] w-full mb-4 last:mb-0 md:mb-0'
+          >
+            <h3 className='text-sm font-bold uppercase md:mb-3 lg:mb-4'>
               {footerItem.title}
             </h3>
             {footerItem.items.map((item, index) => (

@@ -43,12 +43,12 @@ const AboutUs = () => {
         {listItems.map((item, index) => (
           <div
             key={index}
-            className='flex flex-col items-center scroll-snap-item lg:w-[135px] w-[300px]'
+            className='flex flex-col items-center scroll-snap-item'
           >
             <div className='lg:w-[135px] lg:h-[127px] w-[100px] h-[96px]'>
               <img src={item.imageUrl} alt='' />
             </div>
-            <h3 className='py-1 text-base font-bold lg:text-lg md:py-3 lg:py-4'>
+            <h3 className='py-1 text-base font-bold leading-[1.125rem] lg:text-lg md:pt-3.5'>
               {item.title}
             </h3>
             <p className='lg:leading-6 leading-4 text-textColor max-w-[280px] w-full md:text-sm text-xs'>
