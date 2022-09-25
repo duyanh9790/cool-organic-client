@@ -15,3 +15,4 @@ export { default as brand3 } from './brand_3.png';
 export { default as brand4 } from './brand_4.png';
 export { default as brand5 } from './brand_5.png';
 export { default as brand6 } from './brand_6.png';
+export { default as BackgroundNotFound } from './notfound.png';
