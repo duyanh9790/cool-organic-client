@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
@@ -18,10 +18,22 @@ import { facebookBtn, googleBtn } from '../../assets/images/socials';
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (currentUser && searchParams.get('redirect')) {
+      navigate(searchParams.get('redirect'));
+    }
+
+    if (currentUser && !searchParams.get('redirect')) {
+      navigate('/');
+    }
+  }, [currentUser, searchParams, navigate]);
 
   const schema = yup.object({
     email: yup
@@ -60,11 +72,15 @@ const Login = () => {
         });
         return;
       }
-      dispatch(
-        setCurrentUser({
-          currentUser: res.data.user,
-        })
-      );
+
+      const { user } = res.data;
+      const currentUser = {
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      };
+      dispatch(setCurrentUser(currentUser));
       handleLocalStorage.set('accessToken', res.data.accessToken);
       handleAuthToken(res.data.accessToken);
       toast.success(res.data.message);

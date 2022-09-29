@@ -71,11 +71,15 @@ const Register = () => {
         });
         return;
       }
-      dispatch(
-        setCurrentUser({
-          currentUser: res.data.user,
-        })
-      );
+
+      const { user } = res.data;
+      const currentUser = {
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      };
+      dispatch(setCurrentUser(currentUser));
       handleLocalStorage.set('accessToken', res.data.accessToken);
       handleAuthToken(res.data.accessToken);
       toast.success(res.data.message);

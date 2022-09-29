@@ -4,9 +4,13 @@ import handleLocalStorage from './../utils/handleLocalStorage';
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    isLoading: true,
     currentUser: null,
   },
   reducers: {
+    setLoadingCurrentUser: (state, action) => {
+      state.isLoading = action.payload;
+    },
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;
     },
@@ -17,6 +21,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setCurrentUser, removeCurrentUser } = userSlice.actions;
+export const { setCurrentUser, removeCurrentUser, setLoadingCurrentUser } =
+  userSlice.actions;
 
 export default userSlice.reducer;

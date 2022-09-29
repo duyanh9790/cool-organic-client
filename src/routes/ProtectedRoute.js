@@ -1,25 +1,34 @@
-import React, { Fragment } from 'react';
+import { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, roleListPermission }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
+  const isLoadingCurrentUser = useSelector((state) => state.user.isLoading);
+  const navigate = useNavigate();
 
-  const location = useLocation();
-  return (
-    <Fragment>
-      {currentUser ? (
-        children
-      ) : (
-        <Navigate to={`/login?redirect=${location.pathname}`} />
-      )}
-    </Fragment>
-  );
+  const isPermittedRole =
+    roleListPermission && roleListPermission.includes(currentUser?.role);
+
+  useEffect(() => {
+    if (!currentUser && !isLoadingCurrentUser) {
+      toast.info('Bạn cần đăng nhập để tiếp tục');
+      navigate(`/login?redirect=${window.location.pathname}`);
+    }
+    if (currentUser && !isPermittedRole && !isLoadingCurrentUser) {
+      toast.info('Bạn không có quyền truy cập trang này');
+      navigate('/');
+    }
+  }, [currentUser, isLoadingCurrentUser, isPermittedRole, navigate]);
+
+  return <Fragment>{currentUser && isPermittedRole && children}</Fragment>;
 };
 
 ProtectedRoute.propTypes = {
   children: PropTypes.node.isRequired,
+  roleListPermission: PropTypes.array.isRequired,
 };
 
 export default ProtectedRoute;

@@ -5,7 +5,11 @@ import { useDispatch } from 'react-redux';
 import Routers from './routes/Routers';
 import handleLocalStorage from './utils/handleLocalStorage';
 import handleAuthToken from './utils/handleAuthToken';
-import { removeCurrentUser, setCurrentUser } from './redux/userSlice';
+import {
+  removeCurrentUser,
+  setCurrentUser,
+  setLoadingCurrentUser,
+} from './redux/userSlice';
 import authApi from './api/authApi';
 
 function App() {
@@ -20,16 +24,24 @@ function App() {
       }
       try {
         const res = await authApi.getCurrentUser();
-        if (!res.data.user) {
+        const { user } = res.data;
+        if (!user) {
           return;
         }
-        dispatch(setCurrentUser(res.data.user));
+        const currentUser = {
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
+          createdAt: user.createdAt,
+        };
+        dispatch(setCurrentUser(currentUser));
       } catch (error) {
         removeCurrentUser();
       }
+      dispatch(setLoadingCurrentUser(false));
     };
     checkAuth();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

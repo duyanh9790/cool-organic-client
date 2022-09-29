@@ -1,8 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
+
 import routes from './configRoutes';
 import ProtectedRoute from './ProtectedRoute';
-
-import React from 'react';
 import MainLayout from '../layouts/MainLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
@@ -20,11 +19,11 @@ const Routers = () => {
 
         if (route.protected) {
           Component = (
-            <Layout>
-              <ProtectedRoute>
+            <ProtectedRoute roleListPermission={route.roleListPermission}>
+              <Layout>
                 <route.component />
-              </ProtectedRoute>
-            </Layout>
+              </Layout>
+            </ProtectedRoute>
           );
         } else {
           Component = (
