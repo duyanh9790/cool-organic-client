@@ -23,12 +23,15 @@ const Banner = () => {
       speed={600}
       navigation
       pagination
-      className='banner'
+      className='banner h-[60vh] md:h-[55vh] lg:h-[88vh]'
       modules={[Navigation, Pagination]}
     >
       {listImages.map((item, index) => (
-        <SwiperSlide key={index}>
-          <img src={item.imageUrl} alt='banner' />
+        <SwiperSlide key={index} className='h-full'>
+          <div
+            style={{ backgroundImage: `url(${item.imageUrl})` }}
+            className='h-full bg-cover bg-[#BEDFCB] bg-[left_15%_center] md:bg-[left_10%_center] lg:bg-[center_10%_center]'
+          ></div>
         </SwiperSlide>
       ))}
     </Swiper>

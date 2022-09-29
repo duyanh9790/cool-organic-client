@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect, useRef, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import useCLickOutSide from '../../hooks/useClickOutSide';
+import { removeCurrentUser } from '../../redux/userSlice';
 
 import { logo } from '../../assets/images/common';
 
@@ -18,6 +19,28 @@ const menuItems = [
   {
     name: 'Sản phẩm',
     path: '/products',
+    children: [
+      {
+        name: 'Rau củ',
+        path: '/rau-cu',
+      },
+      {
+        name: 'Hoa quả',
+        path: '/hoa-qua',
+      },
+      {
+        name: 'Hải sản',
+        path: '/hai-san',
+      },
+      {
+        name: 'Các loại hạt',
+        path: '/cac-loai-hat',
+      },
+      {
+        name: 'Thực phẩm tươi sống',
+        path: '/thuc-pham-tuoi-song',
+      },
+    ],
   },
   {
     name: 'Liên hệ',
@@ -39,6 +62,7 @@ const menuItemsOnMobileTablet = [
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
   const inputRef = useRef('');
@@ -46,7 +70,9 @@ const Header = () => {
   useCLickOutSide(wrapperInputRef, () => setShowSearchInput(false));
 
   const products = useSelector((state) => state.cart.products);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -62,7 +88,7 @@ const Header = () => {
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <div className='container h-[120px] flex items-center justify-between'>
@@ -89,18 +115,59 @@ const Header = () => {
         </div>
         <div className='flex flex-col items-center mt-3'>
           {menuItemsOnMobileTablet.map((item, index) => (
-            <Link
+            <div
               key={index}
-              to={item.path}
-              className={`h-full block w-full pl-4 py-4 border-t border-borderColor last:border-b text-lg ${
+              className={`overflow-hidden h-full w-full text-lg border-t border-borderColor last:border-b ${
                 window.location.pathname === item.path
                   ? 'text-white bg-primaryColor'
                   : 'text-black bg-white'
               }`}
-              onClick={() => setShowMenu(false)}
+              onClick={() => {
+                setShowMenu(false);
+                navigate(item.path);
+              }}
             >
-              <span>{item.name}</span>
-            </Link>
+              <div className='flex justify-between'>
+                <span className='block py-4 pl-4'>{item.name}</span>
+                {item.children && (
+                  <span
+                    className='px-4 py-4'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowSubMenu(!showSubMenu);
+                    }}
+                  >
+                    <i className='fa-solid fa-caret-down'></i>
+                  </span>
+                )}
+              </div>
+
+              {item.children && (
+                <div
+                  className={`bg-white transition-all duration-500 ${
+                    showSubMenu ? 'max-h-[1000px] visible' : 'max-h-0 invisible'
+                  }`}
+                >
+                  {item.children.map((subItem, index) => (
+                    <div
+                      key={index}
+                      className={`border-t border-borderColor block pl-5 py-4 first:border-t-0 ${
+                        window.location.pathname === subItem.path
+                          ? 'text-white bg-primaryColor'
+                          : 'text-black bg-white'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(subItem.path);
+                        setShowMenu(false);
+                      }}
+                    >
+                      {subItem.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
@@ -118,17 +185,50 @@ const Header = () => {
 
       <ul className='items-center hidden h-full gap-3 lg:flex'>
         {menuItems.map((item, index) => (
-          <li className='h-full' key={index}>
-            <Link
-              to={item.path}
-              className={`block h-full leading-[120px] px-2.5 hover:text-primaryColor ${
+          <li className='relative h-full group' key={index}>
+            <div
+              className={`block h-full leading-[120px] px-2.5 hover:text-primaryColor cursor-pointer ${
                 window.location.pathname === item.path
                   ? 'text-primaryColor'
                   : 'text-black'
               }`}
+              onMouseOver={() => {
+                if (item.children) {
+                  setShowSubMenu(true);
+                }
+              }}
+              onMouseLeave={() => setShowSubMenu(false)}
+              onClick={() => navigate(item.path)}
             >
               <span>{item.name}</span>
-            </Link>
+              {item.children && (
+                <span className='ml-2'>
+                  <i className='fa-solid fa-caret-down'></i>
+                </span>
+              )}
+
+              {item.children && showSubMenu && (
+                <div className='leading-4 absolute z-[100] px-3.5 bg-white shadow-[0_1px_2px_2px_rgba(0,0,0,0.2)] w-[200%] top-[70%] rounded-lg'>
+                  {item.children.map((subItem, index) => (
+                    <div
+                      className={`border-t border-borderColor hover:text-primaryColor block py-4 first:border-t-0 ${
+                        window.location.pathname === subItem.path
+                          ? 'text-primaryColor'
+                          : 'text-black'
+                      }`}
+                      key={index}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowSubMenu(false);
+                        navigate(subItem.path);
+                      }}
+                    >
+                      {subItem.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </li>
         ))}
       </ul>
@@ -161,20 +261,41 @@ const Header = () => {
         <div className='relative hidden cursor-pointer lg:block group'>
           <i className='p-2 fa-solid fa-user-plus'></i>
           <div className='absolute h-5 bg-transparent top-6 right-[20%] w-10 z-[101]'></div>
-          <div className='absolute top-10 hidden p-2.5 rounded-xl group-hover:block w-56 right-[20%] z-[100] border border-primaryColor shadow bg-white'>
-            <Link
-              className='block w-full h-full py-2 mb-2 text-base text-center text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
-              to='/login'
-            >
-              Đăng nhập
-            </Link>
-            <Link
-              className='block w-full h-full py-2 text-base text-center text-black border rounded-full hover:text-white hover:bg-primaryColor hover:bg-none border-borderColor'
-              to='/register'
-            >
-              Đăng ký
-            </Link>
-          </div>
+
+          {currentUser ? (
+            <div className='absolute top-10 hidden p-2.5 rounded-xl group-hover:block w-56 right-[20%] z-[100] border border-primaryColor shadow bg-white'>
+              <Link
+                className='block w-full h-full py-2 mb-2 text-base text-center text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
+                to='/me/info'
+              >
+                Tài khoản
+              </Link>
+              <button
+                className='block w-full h-full py-2 text-base text-center text-black border rounded-full hover:text-white hover:bg-primaryColor hover:bg-none border-borderColor'
+                onClick={() => {
+                  dispatch(removeCurrentUser());
+                  window.location.reload();
+                }}
+              >
+                Đăng xuất
+              </button>
+            </div>
+          ) : (
+            <div className='absolute top-10 hidden p-2.5 rounded-xl group-hover:block w-56 right-[20%] z-[100] border border-primaryColor shadow bg-white'>
+              <Link
+                className='block w-full h-full py-2 mb-2 text-base text-center text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
+                to='/login'
+              >
+                Đăng nhập
+              </Link>
+              <Link
+                className='block w-full h-full py-2 text-base text-center text-black border rounded-full hover:text-white hover:bg-primaryColor hover:bg-none border-borderColor'
+                to='/register'
+              >
+                Đăng ký
+              </Link>
+            </div>
+          )}
         </div>
         <div className='mr-3.5 ml-2.5 md:ml-0'>
           <Link to='/cart' className='relative'>
