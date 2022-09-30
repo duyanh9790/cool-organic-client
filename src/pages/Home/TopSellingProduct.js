@@ -6,6 +6,7 @@ import productApi from '../../api/productApi';
 
 const TopSellingProduct = () => {
   const [productList, setProductList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTopSellingProducts = async () => {
@@ -20,13 +21,18 @@ const TopSellingProduct = () => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
     fetchTopSellingProducts();
   }, []);
   return (
     <SectionLayout title='Sản phẩm bán chạy' path='/top-selling'>
       <div className='mt-4'>
-        <ProductList productList={productList} />
+        <ProductList
+          productList={productList}
+          isLoading={isLoading}
+          skeletonItem={4}
+        />
       </div>
     </SectionLayout>
   );

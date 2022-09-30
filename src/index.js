@@ -19,7 +19,7 @@ root.render(
       <Router>
         <GlobalStyles>
           <App />
-          <ToastContainer />
+          <ToastContainer autoClose={2000} draggable={false} />
         </GlobalStyles>
       </Router>
     </Provider>

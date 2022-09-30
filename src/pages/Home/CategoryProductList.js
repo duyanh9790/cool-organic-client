@@ -5,6 +5,7 @@ import ProductList from '../../components/ProductList';
 import NoProductInCategory from '../../components/NoProductInCategory';
 import productApi from '../../api/productApi';
 import categoryApi from '../../api/categoryApi';
+import breakPoints from '../../utils/breakPoints';
 
 const CategoryProductList = () => {
   const [categoryList, setCategoryList] = useState([]);
@@ -12,6 +13,7 @@ const CategoryProductList = () => {
   const [productList, setProductList] = useState([]);
   const [categoryName, setCategoryName] = useState('Rau củ');
   const [showMenuCategory, setShowMenuCategory] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCategoryList = async () => {
@@ -31,17 +33,24 @@ const CategoryProductList = () => {
 
   useEffect(() => {
     const fetchProductsByCategory = async () => {
+      let limit = 8;
+      if (breakPoints.isMobile()) {
+        limit = 4;
+      }
       try {
         const response = await productApi.getProductsByCategory(categorySlug, {
           params: {
             page: 1,
-            limit: 8,
+            limit,
           },
         });
         setProductList(response.data.products);
       } catch (error) {
-        console.log(error);
+        if (error.response.status === 404) {
+          setProductList(null);
+        }
       }
+      setIsLoading(false);
     };
     fetchProductsByCategory();
   }, [categorySlug]);
@@ -103,10 +112,10 @@ const CategoryProductList = () => {
         </div>
       </div>
 
-      {productList.length > 0 ? (
-        <ProductList productList={productList} />
-      ) : (
+      {productList === null ? (
         <NoProductInCategory />
+      ) : (
+        <ProductList productList={productList} isLoading={isLoading} />
       )}
     </SectionLayout>
   );
