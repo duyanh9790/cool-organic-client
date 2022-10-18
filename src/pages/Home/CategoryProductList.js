@@ -31,17 +31,17 @@ const CategoryProductList = () => {
     fetchCategoryList();
   }, []);
 
+  let perPage = 8;
   useEffect(() => {
     const fetchProductsByCategory = async () => {
-      let limit = 8;
       if (breakPoints.isMobile()) {
-        limit = 4;
+        perPage = 4;
       }
       try {
         const response = await productApi.getProductsByCategory(categorySlug, {
           params: {
             page: 1,
-            limit,
+            limit: perPage,
           },
         });
         setProductList(response.data.products);
@@ -115,7 +115,11 @@ const CategoryProductList = () => {
       {productList === null ? (
         <NoProductInCategory />
       ) : (
-        <ProductList productList={productList} isLoading={isLoading} />
+        <ProductList
+          productList={productList}
+          isLoading={isLoading}
+          skeletonItem={perPage}
+        />
       )}
     </SectionLayout>
   );

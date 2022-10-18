@@ -185,7 +185,7 @@ const Header = () => {
 
       <ul className='items-center hidden h-full gap-3 lg:flex'>
         {menuItems.map((item, index) => (
-          <li className='relative h-full group' key={index}>
+          <li className='relative h-full select-none group' key={index}>
             <div
               className={`block h-full leading-[120px] px-2.5 hover:text-primaryColor cursor-pointer ${
                 window.location.pathname === item.path

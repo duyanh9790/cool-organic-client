@@ -1,15 +1,13 @@
 import React, { Fragment } from 'react';
-import Banner from '../../components/Banner';
+import BreadCrumb from '../../components/BreadCrumb';
 
 const Introduce = () => {
   return (
     <Fragment>
-      <Banner>
-        <h1 className='text-4xl font-bold'>Giới thiệu</h1>
-      </Banner>
+      <BreadCrumb />
       <div className='container'>
-        <h2 className='text-4xl font-medium mb-3'>Giới thiệu</h2>
-        <p className='text-sm leading-6 mb-4'>
+        <h2 className='mb-3 text-4xl font-medium'>Giới thiệu</h2>
+        <p className='mb-4 text-sm leading-6'>
           <strong>Cool Oganic</strong> là công ty thương mại điện tử chuyên cung
           cấp các thực phẩm hữu cơ và tự nhiên với chuỗi cửa hàng thực phẩm hữu
           cơ với mục tiêu giúp người tiêu dùng Việt Nam có một cuộc sống khỏe
@@ -30,7 +28,7 @@ const Introduce = () => {
           (organic) và thuần từ thiên nhiên, nhằm mang lại sức khoẻ tốt nhất cho
           cộng đồng.
         </p>
-        <p className='text-sm leading-6 mb-24'>
+        <p className='mb-24 text-sm leading-6'>
           Sứ mệnh của <strong>Cool Oganic</strong> đó là giúp mọi người dễ dàng
           tiếp cận hơn với các loại thực phẩm hữu cơ, thực phẩm tự nhiên. Không
           chỉ cung cấp các sản phẩm hữu cơ, chúng tôi còn đem đến những thông

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,10 +6,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
 
+import BreadCrumb from '../../components/BreadCrumb';
+import { Loading } from '../../components/Loading';
 import useSearchParams from './../../hooks/useSearchParams';
 import { setCurrentUser } from '../../redux/userSlice';
 import authApi from './../../api/authApi';
-import { Loading } from '../../components/Loading';
 import handleLocalStorage from '../../utils/handleLocalStorage';
 import handleAuthToken from './../../utils/handleAuthToken';
 
@@ -103,79 +104,84 @@ const Login = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(handleLogin)}
-      className='w-full max-w-[540px] p-4 mx-auto my-10 text-center'
-    >
-      <div>
-        <h3 className='uppercase text-[26px] mb-6'>Đăng nhập tài khoản</h3>
-        <div className='flex justify-center gap-1 mb-7'>
-          <div className='max-w-[129px] w-full hover:opacity-80 cursor-pointer'>
-            <img src={facebookBtn} alt='Login with Facebook' />
-          </div>
-          <div className='max-w-[129px] w-full hover:opacity-80 cursor-pointer'>
-            <img src={googleBtn} alt='Login with Google' />
-          </div>
-        </div>
-      </div>
-
-      <div className='flex flex-col gap-[18px]'>
-        <div>
-          <input
-            type='text'
-            name='email'
-            className='bg-white block+ w-full py-2.5 px-6 text-black border border-borderColor outline-none min-h-[50px] rounded-full'
-            placeholder='Email'
-            {...register('email')}
-            autoComplete='username'
-          />
-          <span className='block mt-1 ml-3 text-left text-red-500'>
-            {errors.email?.message}
-          </span>
-        </div>
-        <div>
-          <input
-            type='password'
-            name='password'
-            className='bg-white block w-full py-2.5 px-6 text-black border border-borderColor outline-none min-h-[50px] rounded-full'
-            placeholder='Mật khẩu'
-            {...register('password')}
-            autoComplete='current-password'
-          />
-          <span
-            className={`block text-left mt-1 ml-3 ${
-              errors.password?.message ? 'text-red-500' : 'text-textColor'
-            }`}
-          >
-            {errors.password?.message || (
-              <span>
-                <span className='font-bold text-red-500'>*</span> Sử dụng từ 8
-                kí tự trở lên
-              </span>
-            )}
-          </span>
-        </div>
-        <button
-          type='submit'
-          className='flex items-center justify-center w-full gap-3 py-4 text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
+    <Fragment>
+      <BreadCrumb isLoading={isLoading} />
+      <div className='container'>
+        <form
+          onSubmit={handleSubmit(handleLogin)}
+          className='w-full max-w-[540px] p-4 mx-auto my-10 text-center'
         >
-          {isLoading && <Loading />} <span>Đăng nhập</span>
-        </button>
-      </div>
+          <div>
+            <h3 className='uppercase text-[26px] mb-6'>Đăng nhập tài khoản</h3>
+            <div className='flex justify-center gap-1 mb-7'>
+              <div className='max-w-[129px] w-full hover:opacity-80 cursor-pointer'>
+                <img src={facebookBtn} alt='Login with Facebook' />
+              </div>
+              <div className='max-w-[129px] w-full hover:opacity-80 cursor-pointer'>
+                <img src={googleBtn} alt='Login with Google' />
+              </div>
+            </div>
+          </div>
 
-      <div>
-        <p className='underline text-primaryColor text-[15px] cursor-pointer mt-4'>
-          Quên mật khẩu
-        </p>
+          <div className='flex flex-col gap-[18px]'>
+            <div>
+              <input
+                type='text'
+                name='email'
+                className='bg-white block+ w-full py-2.5 px-6 text-black border border-borderColor outline-none min-h-[50px] rounded-full'
+                placeholder='Email'
+                {...register('email')}
+                autoComplete='username'
+              />
+              <span className='block mt-1 ml-3 text-left text-red-500'>
+                {errors.email?.message}
+              </span>
+            </div>
+            <div>
+              <input
+                type='password'
+                name='password'
+                className='bg-white block w-full py-2.5 px-6 text-black border border-borderColor outline-none min-h-[50px] rounded-full'
+                placeholder='Mật khẩu'
+                {...register('password')}
+                autoComplete='current-password'
+              />
+              <span
+                className={`block text-left mt-1 ml-3 ${
+                  errors.password?.message ? 'text-red-500' : 'text-textColor'
+                }`}
+              >
+                {errors.password?.message || (
+                  <span>
+                    <span className='font-bold text-red-500'>*</span> Sử dụng từ
+                    8 kí tự trở lên
+                  </span>
+                )}
+              </span>
+            </div>
+            <button
+              type='submit'
+              className='flex items-center justify-center w-full gap-3 py-4 text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
+            >
+              {isLoading && <Loading />} <span>Đăng nhập</span>
+            </button>
+          </div>
 
-        <p className='mt-6 text-textColor'>
-          Bạn chưa có tài khoản? vui lòng đăng ký
-          <Link to='/register'>
-            <span className='ml-1 underline '>tại đây</span>
-          </Link>
-        </p>
+          <div>
+            <p className='underline text-primaryColor text-[15px] cursor-pointer mt-4'>
+              Quên mật khẩu
+            </p>
+
+            <p className='mt-6 text-textColor'>
+              Bạn chưa có tài khoản? vui lòng đăng ký
+              <Link to='/register'>
+                <span className='ml-1 underline '>tại đây</span>
+              </Link>
+            </p>
+          </div>
+        </form>
       </div>
-    </form>
+    </Fragment>
   );
 };
 

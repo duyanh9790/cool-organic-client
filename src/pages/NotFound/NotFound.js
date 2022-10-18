@@ -1,15 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import Banner from '../../components/Banner';
+import BreadCrumb from '../../components/BreadCrumb';
 import { BackgroundNotFound } from '../../assets/images/common';
 
 const NotFound = () => {
   return (
     <div>
-      <Banner>
-        <h1 className='text-4xl font-bold'>Không tìm thấy trang này</h1>
-      </Banner>
+      <BreadCrumb>Trang không tồn tại</BreadCrumb>
       <div className='container flex flex-col items-center justify-center'>
         <div className='h-[600px]'>
           <img src={BackgroundNotFound} alt='NOT FOUND PAGE' />
