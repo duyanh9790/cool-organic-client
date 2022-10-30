@@ -28,6 +28,10 @@ const routes = [
     breadCrumbName: 'Tìm kiếm',
   },
   {
+    path: '/my-info',
+    breadCrumbName: 'Trang khách hàng',
+  },
+  {
     path: '/products/:slug',
     breadCrumbName: 'Chi tiết sản phẩm',
   },
@@ -42,10 +46,6 @@ const routes = [
   {
     path: '/register',
     breadCrumbName: 'Đăng ký',
-  },
-  {
-    path: '/me/info',
-    breadCrumbName: 'Trang khách hàng',
   },
   {
     path: '/introduce',

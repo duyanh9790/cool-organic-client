@@ -69,7 +69,7 @@ const routes = [
     component: Register,
   },
   {
-    path: '/me/info',
+    path: '/my-info',
     component: UserInfo,
     protected: true,
     roleListPermission: ['admin', 'user'],

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Fragment } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -151,7 +151,7 @@ const Header = () => {
                   {item.children.map((subItem, index) => (
                     <div
                       key={index}
-                      className={`border-t border-borderColor block pl-5 py-4 first:border-t-0 ${
+                      className={`border-t border-borderColor block pl-7 py-4 first:border-t-0 ${
                         window.location.pathname === subItem.path
                           ? 'text-white bg-primaryColor'
                           : 'text-black bg-white'
@@ -266,7 +266,7 @@ const Header = () => {
             <div className='absolute top-10 hidden p-2.5 rounded-xl group-hover:block w-56 right-[20%] z-[100] border border-primaryColor shadow bg-white'>
               <Link
                 className='block w-full h-full py-2 mb-2 text-base text-center text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
-                to='/me/info'
+                to='/my-info'
               >
                 Tài khoản
               </Link>
