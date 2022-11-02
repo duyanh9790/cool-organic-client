@@ -30,7 +30,7 @@ const Contact = () => {
   });
 
   const handleSubmitFormContact = (data) => {
-    console.log(data);
+    reset();
   };
 
   return (
