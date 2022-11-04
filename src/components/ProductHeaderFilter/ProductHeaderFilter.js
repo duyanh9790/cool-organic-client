@@ -8,6 +8,7 @@ const ProductHeaderFilter = ({
   categoryName,
   isLoading = false,
   onFilterChange,
+  setCurrentPage,
 }) => {
   const searchParams = useSearchParams();
 
@@ -22,6 +23,14 @@ const ProductHeaderFilter = ({
     onFilterChange(filters);
   }, [filters]);
 
+  const handleSortChange = (sortName, value) => {
+    setCurrentPage(1);
+    setFilters({
+      ...filters,
+      [sortName]: value,
+    });
+  };
+
   return (
     <Fragment>
       {isLoading ? (
@@ -31,25 +40,23 @@ const ProductHeaderFilter = ({
           <h3 className='text-2xl font-medium min-h-[2rem] mb-1.5 lg:mb-0'>
             {categoryName}
           </h3>
-          <div className='flex flex-col md:flex-row items-center gap-4 md:gap-5'>
+          <div className='flex flex-col items-center gap-4 md:flex-row md:gap-5'>
             <p className='mr-5 text-sm'>Sắp xếp theo:</p>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-5'>
+            <div className='grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-5'>
               <div className='flex items-center text-sm hover:text-primaryColor'>
                 <input
                   type='checkbox'
                   id='newest-product'
                   value='newest'
                   checked={filters.date === 'newest'}
-                  onChange={() =>
-                    setFilters({
-                      ...filters,
-                      date: filters.date === 'newest' ? '' : 'newest',
-                    })
-                  }
+                  onChange={() => {
+                    const value = filters.date === 'newest' ? '' : 'newest';
+                    handleSortChange('date', value);
+                  }}
                   className='cursor-pointer'
                 />
                 <label
-                  className='pl-1 select-none cursor-pointer'
+                  className='pl-1 cursor-pointer select-none'
                   htmlFor='newest-product'
                 >
                   Hàng mới về
@@ -61,16 +68,14 @@ const ProductHeaderFilter = ({
                   id='oldest-product'
                   value='oldest'
                   checked={filters.date === 'oldest'}
-                  onChange={() =>
-                    setFilters({
-                      ...filters,
-                      date: filters.date === 'oldest' ? '' : 'oldest',
-                    })
-                  }
+                  onChange={() => {
+                    const value = filters.date === 'oldest' ? '' : 'oldest';
+                    handleSortChange('date', value);
+                  }}
                   className='cursor-pointer'
                 />
                 <label
-                  className='pl-1 select-none cursor-pointer'
+                  className='pl-1 cursor-pointer select-none'
                   htmlFor='oldest-product'
                 >
                   Hàng cũ nhất
@@ -82,16 +87,14 @@ const ProductHeaderFilter = ({
                   id='asc-price'
                   value='asc'
                   checked={filters.price === 'asc'}
-                  onChange={() =>
-                    setFilters({
-                      ...filters,
-                      price: filters.price === 'asc' ? '' : 'asc',
-                    })
-                  }
+                  onChange={() => {
+                    const value = filters.price === 'asc' ? '' : 'asc';
+                    handleSortChange('price', value);
+                  }}
                   className='cursor-pointer'
                 />
                 <label
-                  className='pl-1 select-none cursor-pointer'
+                  className='pl-1 cursor-pointer select-none'
                   htmlFor='asc-price'
                 >
                   Giá tăng dần
@@ -103,16 +106,14 @@ const ProductHeaderFilter = ({
                   id='desc-price'
                   value='desc'
                   checked={filters.price === 'desc'}
-                  onChange={() =>
-                    setFilters({
-                      ...filters,
-                      price: filters.price === 'desc' ? '' : 'desc',
-                    })
-                  }
+                  onChange={() => {
+                    const value = filters.price === 'desc' ? '' : 'desc';
+                    handleSortChange('price', value);
+                  }}
                   className='cursor-pointer'
                 />
                 <label
-                  className='pl-1 select-none cursor-pointer'
+                  className='pl-1 cursor-pointer select-none'
                   htmlFor='desc-price'
                 >
                   Giá giảm dần
@@ -130,6 +131,7 @@ ProductHeaderFilter.propTypes = {
   categoryName: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
   onFilterChange: PropTypes.func.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
 };
 
 export default ProductHeaderFilter;
