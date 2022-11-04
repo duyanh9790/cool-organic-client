@@ -8,7 +8,6 @@ const ProductHeaderFilter = ({
   categoryName,
   isLoading = false,
   onFilterChange,
-  setCurrentPage,
 }) => {
   const searchParams = useSearchParams();
 
@@ -22,14 +21,6 @@ const ProductHeaderFilter = ({
   useEffect(() => {
     onFilterChange(filters);
   }, [filters]);
-
-  const handleSortChange = (sortName, value) => {
-    setCurrentPage(1);
-    setFilters({
-      ...filters,
-      [sortName]: value,
-    });
-  };
 
   return (
     <Fragment>
@@ -49,10 +40,12 @@ const ProductHeaderFilter = ({
                   id='newest-product'
                   value='newest'
                   checked={filters.date === 'newest'}
-                  onChange={() => {
-                    const value = filters.date === 'newest' ? '' : 'newest';
-                    handleSortChange('date', value);
-                  }}
+                  onChange={() =>
+                    setFilters({
+                      ...filters,
+                      date: filters.date === 'newest' ? '' : 'newest',
+                    })
+                  }
                   className='cursor-pointer'
                 />
                 <label
@@ -68,10 +61,12 @@ const ProductHeaderFilter = ({
                   id='oldest-product'
                   value='oldest'
                   checked={filters.date === 'oldest'}
-                  onChange={() => {
-                    const value = filters.date === 'oldest' ? '' : 'oldest';
-                    handleSortChange('date', value);
-                  }}
+                  onChange={() =>
+                    setFilters({
+                      ...filters,
+                      date: filters.date === 'oldest' ? '' : 'oldest',
+                    })
+                  }
                   className='cursor-pointer'
                 />
                 <label
@@ -87,10 +82,12 @@ const ProductHeaderFilter = ({
                   id='asc-price'
                   value='asc'
                   checked={filters.price === 'asc'}
-                  onChange={() => {
-                    const value = filters.price === 'asc' ? '' : 'asc';
-                    handleSortChange('price', value);
-                  }}
+                  onChange={() =>
+                    setFilters({
+                      ...filters,
+                      price: filters.price === 'asc' ? '' : 'asc',
+                    })
+                  }
                   className='cursor-pointer'
                 />
                 <label
@@ -106,10 +103,12 @@ const ProductHeaderFilter = ({
                   id='desc-price'
                   value='desc'
                   checked={filters.price === 'desc'}
-                  onChange={() => {
-                    const value = filters.price === 'desc' ? '' : 'desc';
-                    handleSortChange('price', value);
-                  }}
+                  onChange={() =>
+                    setFilters({
+                      ...filters,
+                      price: filters.price === 'desc' ? '' : 'desc',
+                    })
+                  }
                   className='cursor-pointer'
                 />
                 <label
@@ -131,7 +130,6 @@ ProductHeaderFilter.propTypes = {
   categoryName: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
   onFilterChange: PropTypes.func.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
 };
 
 export default ProductHeaderFilter;

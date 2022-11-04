@@ -21,17 +21,21 @@ const CategoryProduct = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState(() => {
     return {
-      price: '',
-      date: '',
-      salePrice: [],
-      supplier: [],
+      price: searchParams.get('price') || '',
+      date: searchParams.get('date') || '',
+      salePrice: searchParams.get('salePrice') || '',
+      supplier: searchParams.get('supplier') || '',
     };
   });
   const [currentPage, setCurrentPage] = useState(() => {
     return Number(searchParams.get('page')) || 1;
   });
 
-  const perPage = 8;
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
+  const perPage = 12;
   const { categorySlug } = useParams();
   useEffect(() => {
     const fetchProductsByCategory = async () => {
@@ -77,11 +81,9 @@ const CategoryProduct = () => {
   };
 
   const handleFilterChange = (newFilters) => {
-    setFilters((prev) => {
-      return {
-        ...prev,
-        ...newFilters,
-      };
+    setFilters({
+      ...filters,
+      ...newFilters,
     });
   };
 
@@ -95,14 +97,12 @@ const CategoryProduct = () => {
             categoryName={categoryName}
             isLoading={isLoading}
             onFilterChange={handleFilterChange}
-            setCurrentPage={setCurrentPage}
           />
-          <div className='flex flex-col w-full lg:flex-row'>
+          <div className='flex flex-col lg:flex-row w-full'>
             <div className='lg:w-[16.66667%] w-full mr-5'>
               <FilterSideBar
                 filters={filters}
                 handleFilterChange={handleFilterChange}
-                setCurrentPage={setCurrentPage}
               />
             </div>
             <div className='lg:w-[83.33333%] w-full'>
