@@ -106,13 +106,6 @@ const CategoryProduct = () => {
               />
             </div>
             <div className='lg:w-[83.33333%] w-full'>
-              {!isLoading && productList.length === 0 && (
-                <div className='flex items-center justify-center w-full h-full'>
-                  <h2 className='text-2xl font-medium'>
-                    Hiện không có sản phẩm nào phù hợp
-                  </h2>
-                </div>
-              )}
               <ProductList
                 productList={productList}
                 isLoading={isLoading}

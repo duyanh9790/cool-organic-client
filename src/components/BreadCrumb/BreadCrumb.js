@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import useBreadcrumbs from 'use-react-router-breadcrumbs';
+import { useLocation } from 'react-router-dom';
 
 import BreadCrumbSkeleton from '../Skeleton/BreadCrumbSkeleton';
 import { backgroundBreadCrumb } from '../../assets/images/common';
@@ -25,7 +26,7 @@ const routes = [
   },
   {
     path: '/search',
-    breadCrumbName: 'Tìm kiếm',
+    breadCrumbName: 'Trang tìm kiếm',
   },
   {
     path: '/my-info',
@@ -63,9 +64,11 @@ const routes = [
 
 const BreadCrumb = ({ children, isLoading = false }) => {
   const breadcrumbs = useBreadcrumbs(routes);
+  const location = useLocation();
+
   return (
     <div
-      className='flex items-center justify-center mb-10 py-14'
+      className='flex items-center justify-center py-10 mb-5 md:mb-8 lg:mb-10 md:py-12 lg:py-14'
       style={{
         backgroundImage: `url(${backgroundBreadCrumb})`,
         backgroundSize: 'cover',
@@ -78,7 +81,7 @@ const BreadCrumb = ({ children, isLoading = false }) => {
       ) : (
         <div className='flex flex-col items-center justify-center'>
           <div className='mb-3'>
-            <h1 className='text-4xl font-bold'>
+            <h1 className='text-3xl font-bold text-center md:text-4xl'>
               {children ||
                 breadcrumbs[breadcrumbs.length - 1].match.route.breadCrumbName}
             </h1>
@@ -109,7 +112,9 @@ const BreadCrumb = ({ children, isLoading = false }) => {
                       </Link>
                     ) : (
                       <span className='text-base text-primaryColor'>
-                        {children || match.route.breadCrumbName}
+                        {location.pathname === '/search'
+                          ? match.route.breadCrumbName
+                          : children || match.route.breadCrumbName}
                       </span>
                     )}
 

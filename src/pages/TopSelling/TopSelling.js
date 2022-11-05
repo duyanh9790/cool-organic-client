@@ -1,16 +1,15 @@
-import { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 
-import BreadCrumb from './../../components/BreadCrumb';
-import ProductHeaderFilter from './../../components/ProductHeaderFilter';
-import FilterSideBar from '../../components/FilterSideBar/FilterSideBar';
+import ProductHeaderFilter from '../../components/ProductHeaderFilter';
 import ProductList from '../../components/ProductList';
+import BreadCrumb from '../../components/BreadCrumb';
 import Pagination from '../../components/Pagination/Pagination';
-
-import productApi from './../../api/productApi';
-import useSearchParams from './../../hooks/useSearchParams';
+import productApi from '../../api/productApi';
+import useSearchParams from '../../hooks/useSearchParams';
 import handleQueryParam from '../../utils/handleQueryParam';
+import FilterSideBar from './../../components/FilterSideBar/index';
 
-const Products = () => {
+const TopSelling = () => {
   const searchParams = useSearchParams();
 
   const [productList, setProductList] = useState([]);
@@ -30,10 +29,10 @@ const Products = () => {
 
   const perPage = 8;
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchTopSellingProducts = async () => {
       setIsLoading(true);
       try {
-        const response = await productApi.getProducts({
+        const response = await productApi.getTopSellingProducts({
           params: {
             page: currentPage,
             limit: perPage,
@@ -54,8 +53,8 @@ const Products = () => {
       }
       setIsLoading(false);
     };
-    fetchProducts();
-  }, [currentPage, filters]);
+    fetchTopSellingProducts();
+  }, [filters, currentPage]);
 
   const handlePageChange = (currentPageIndex) => {
     const currentPage = currentPageIndex.selected + 1;
@@ -76,7 +75,7 @@ const Products = () => {
       <BreadCrumb isLoading={isLoading} />
       <div className='container'>
         <ProductHeaderFilter
-          categoryName='Tất cả sản phẩm'
+          categoryName='Sản phẩm bán chạy'
           isLoading={isLoading}
           onFilterChange={handleFilterChange}
           setCurrentPage={setCurrentPage}
@@ -90,13 +89,6 @@ const Products = () => {
             />
           </div>
           <div className='lg:w-[83.33333%] w-full'>
-            {!isLoading && productList.length === 0 && (
-              <div className='flex items-center justify-center w-full h-full'>
-                <h2 className='text-2xl font-medium'>
-                  Hiện không có sản phẩm nào phù hợp
-                </h2>
-              </div>
-            )}
             <ProductList
               productList={productList}
               isLoading={isLoading}
@@ -115,4 +107,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default TopSelling;

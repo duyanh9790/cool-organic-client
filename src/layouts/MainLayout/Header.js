@@ -79,7 +79,10 @@ const Header = () => {
       const keyword = inputRef.current.value;
       const isFocus = document.activeElement === inputRef.current;
       if (e.key === 'Enter' && isFocus) {
-        navigate(`/search?q=${keyword}`);
+        if (keyword) {
+          navigate(`/search?q=${keyword}`);
+          inputRef.current.value = '';
+        }
       }
     };
 
@@ -252,7 +255,12 @@ const Header = () => {
             />
             <div
               className='absolute top-[30%] pb-2 right-8 h-full z-2'
-              onClick={() => navigate(`/search?q=${inputRef.current.value}`)}
+              onClick={() => {
+                if (inputRef.current.value) {
+                  navigate(`/search?q=${inputRef.current.value}`);
+                  inputRef.current.value = '';
+                }
+              }}
             >
               <i className='fa-solid fa-magnifying-glass'></i>
             </div>
