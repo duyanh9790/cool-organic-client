@@ -8,12 +8,12 @@ const SectionLayout = ({ title, children, className = '', path = '/' }) => {
       <h2 className='mb-3 md:mb-5'>
         <Link
           to={path}
-          className='text-3xl font-medium uppercase text-gradient'
+          className='text-2xl md:text-3xl font-medium uppercase text-gradient'
         >
           {title}
         </Link>
       </h2>
-      <span className='inline-block mb-2 md:mb-4 icon-green'></span>
+      <span className='inline-block mb-3 md:mb-4 icon-green'></span>
       <div>{children}</div>
     </div>
   );

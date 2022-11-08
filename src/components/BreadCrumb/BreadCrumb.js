@@ -1,66 +1,12 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import useBreadcrumbs from 'use-react-router-breadcrumbs';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import BreadCrumbSkeleton from '../Skeleton/BreadCrumbSkeleton';
 import { backgroundBreadCrumb } from '../../assets/images/common';
-import { Link } from 'react-router-dom';
 
-const routes = [
-  {
-    path: '/',
-    breadCrumbName: 'Trang chủ',
-  },
-  {
-    path: '/products',
-    breadCrumbName: 'Tất cả sản phẩm',
-  },
-  {
-    path: '/top-selling',
-    breadCrumbName: 'Sản phẩm bán chạy',
-  },
-  {
-    path: '/cart',
-    breadCrumbName: 'Giỏ hàng',
-  },
-  {
-    path: '/search',
-    breadCrumbName: 'Trang tìm kiếm',
-  },
-  {
-    path: '/my-info',
-    breadCrumbName: 'Trang khách hàng',
-  },
-  {
-    path: '/products/:slug',
-    breadCrumbName: 'Chi tiết sản phẩm',
-  },
-  {
-    path: '/:categorySlug',
-    breadCrumbName: 'Danh mục sản phẩm',
-  },
-  {
-    path: '/login',
-    breadCrumbName: 'Đăng nhập',
-  },
-  {
-    path: '/register',
-    breadCrumbName: 'Đăng ký',
-  },
-  {
-    path: '/introduce',
-    breadCrumbName: 'Giới thiệu',
-  },
-  {
-    path: '/contact',
-    breadCrumbName: 'Liên hệ',
-  },
-  {
-    path: '/*',
-    breadCrumbName: 'Trang không tồn tại',
-  },
-];
+import routes from './breadCrumbRoutes';
 
 const BreadCrumb = ({ children, isLoading = false }) => {
   const breadcrumbs = useBreadcrumbs(routes);
