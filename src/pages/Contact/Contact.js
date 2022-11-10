@@ -23,8 +23,9 @@ const Contact = () => {
     reset,
   } = useForm({
     defaultValues: {
+      fullName: '',
       email: '',
-      password: '',
+      content: '',
     },
     resolver: yupResolver(schema),
   });
@@ -113,7 +114,6 @@ const Contact = () => {
 
               <button
                 className='inline-block min-w-[160px] py-2 mb-2 text-base text-center text-white rounded-full gradient-primary hover:bg-primaryColor hover:bg-none'
-                to='/login'
                 type='submit'
               >
                 Gửi liên hệ

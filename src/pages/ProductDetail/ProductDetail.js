@@ -1,7 +1,63 @@
-import React from 'react';
+import { useState, useEffect, Fragment } from 'react';
+import { useParams } from 'react-router-dom';
+
+import NotFound from '../NotFound/NotFound';
+import BreadCrumb from '../../components/BreadCrumb';
+import ProductDetailContent from '../../components/ProductDetailContent';
+import RelatedProductList from './RelatedProductList';
+import productApi from './../../api/productApi';
+
+import { backgroundProductDetail } from '../../assets/images/common';
 
 const ProductDetail = () => {
-  return <div>ProductDetail</div>;
+  const { slug } = useParams();
+  const [product, setProduct] = useState({});
+  const [categorySlug, setCategorySlug] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProductDetail = async () => {
+      try {
+        const response = await productApi.getProductBySlug(slug);
+        setProduct(response.data.product);
+        setCategorySlug(response.data.product.categorySlug);
+      } catch (error) {
+        if (error.response.status === 404) {
+          setProduct(null);
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchProductDetail();
+  }, [slug]);
+
+  return (
+    <Fragment>
+      {product === null && <NotFound />}
+      {product && (
+        <Fragment>
+          <BreadCrumb isLoading={isLoading}>{product.name}</BreadCrumb>
+          <div className='container'>
+            <ProductDetailContent
+              product={product}
+              isLoading={isLoading}
+              className='gap-6 lg:gap-0'
+            />
+          </div>
+          <div
+            style={{
+              backgroundImage: `url(${backgroundProductDetail})`,
+              backgroundSize: 'cover',
+              backgroundPosition: '46% center',
+              backgroundRepeat: 'no-repeat',
+            }}
+            className='h-[200px] mt-8 w-full md:container'
+          ></div>
+          <RelatedProductList slug={slug} categorySlug={categorySlug} />
+        </Fragment>
+      )}
+    </Fragment>
+  );
 };
 
 export default ProductDetail;
