@@ -1,4 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
+import queryString from 'query-string';
 
 import BreadCrumb from './../../components/BreadCrumb';
 import ProductHeaderFilter from './../../components/ProductHeaderFilter';
@@ -8,7 +9,6 @@ import Pagination from '../../components/Pagination/Pagination';
 
 import productApi from './../../api/productApi';
 import useSearchParams from './../../hooks/useSearchParams';
-import handleQueryParam from '../../utils/handleQueryParam';
 
 const Products = () => {
   const searchParams = useSearchParams();
@@ -40,11 +40,17 @@ const Products = () => {
             ...filters,
           },
         });
-        handleQueryParam('page', currentPage);
-        handleQueryParam('price', filters.price);
-        handleQueryParam('date', filters.date);
-        handleQueryParam('salePrice', filters.salePrice, 'multiple');
-        handleQueryParam('supplier', filters.supplier, 'multiple');
+
+        const queryParamObj = {
+          ...filters,
+          page: currentPage,
+        };
+        const queryParam = queryString.stringify(queryParamObj, {
+          skipEmptyString: true,
+        });
+        if (queryParam) {
+          window.history.replaceState({}, '', `?${queryParam}`);
+        }
 
         setProductList(response.data.products);
         setCurrentPage(response.data.pagination.currentPage);

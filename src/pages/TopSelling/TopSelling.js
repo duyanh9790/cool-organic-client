@@ -1,13 +1,13 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
+import queryString from 'query-string';
 
 import ProductHeaderFilter from '../../components/ProductHeaderFilter';
 import ProductList from '../../components/ProductList';
 import BreadCrumb from '../../components/BreadCrumb';
-import Pagination from '../../components/Pagination/Pagination';
+import Pagination from '../../components/Pagination';
 import productApi from '../../api/productApi';
+import FilterSideBar from './../../components/FilterSideBar';
 import useSearchParams from '../../hooks/useSearchParams';
-import handleQueryParam from '../../utils/handleQueryParam';
-import FilterSideBar from './../../components/FilterSideBar/index';
 
 const TopSelling = () => {
   const searchParams = useSearchParams();
@@ -39,11 +39,17 @@ const TopSelling = () => {
             ...filters,
           },
         });
-        handleQueryParam('page', currentPage);
-        handleQueryParam('price', filters.price);
-        handleQueryParam('date', filters.date);
-        handleQueryParam('salePrice', filters.salePrice, 'multiple');
-        handleQueryParam('supplier', filters.supplier, 'multiple');
+
+        const queryParamObj = {
+          ...filters,
+          page: currentPage,
+        };
+        const queryParam = queryString.stringify(queryParamObj, {
+          skipEmptyString: true,
+        });
+        if (queryParam) {
+          window.history.replaceState({}, '', `?${queryParam}`);
+        }
 
         setProductList(response.data.products);
         setCurrentPage(response.data.pagination.currentPage);

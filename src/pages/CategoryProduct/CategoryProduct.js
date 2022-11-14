@@ -1,16 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
+import queryString from 'query-string';
 import { Link, useParams } from 'react-router-dom';
 
 import ProductHeaderFilter from '../../components/ProductHeaderFilter';
 import ProductList from '../../components/ProductList';
-import NoProductInCategory from './../../components/NoProductInCategory/NoProductInCategory';
+import NoProductInCategory from './../../components/NoProductInCategory';
 import BreadCrumb from '../../components/BreadCrumb';
-import NotFound from './../NotFound/NotFound';
-import Pagination from '../../components/Pagination/Pagination';
+import NotFound from './../NotFound';
+import Pagination from '../../components/Pagination';
 import productApi from '../../api/productApi';
+import FilterSideBar from './../../components/FilterSideBar';
 import useSearchParams from '../../hooks/useSearchParams';
-import handleQueryParam from '../../utils/handleQueryParam';
-import FilterSideBar from './../../components/FilterSideBar/index';
 
 const CategoryProduct = () => {
   const searchParams = useSearchParams();
@@ -44,11 +44,17 @@ const CategoryProduct = () => {
             ...filters,
           },
         });
-        handleQueryParam('page', currentPage);
-        handleQueryParam('price', filters.price);
-        handleQueryParam('date', filters.date);
-        handleQueryParam('salePrice', filters.salePrice, 'multiple');
-        handleQueryParam('supplier', filters.supplier, 'multiple');
+
+        const queryParamObj = {
+          ...filters,
+          page: currentPage,
+        };
+        const queryParam = queryString.stringify(queryParamObj, {
+          skipEmptyString: true,
+        });
+        if (queryParam) {
+          window.history.replaceState({}, '', `?${queryParam}`);
+        }
 
         setProductList(response.data.products);
         setCategoryName(response.data.categoryName);
