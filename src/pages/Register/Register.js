@@ -10,6 +10,7 @@ import BreadCrumb from './../../components/BreadCrumb';
 import { Loading } from '../../components/Loading';
 import useSearchParams from './../../hooks/useSearchParams';
 import authApi from './../../api/authApi';
+import cartApi from '../../api/cartApi';
 import { setCurrentUser } from '../../redux/userSlice';
 import handleLocalStorage from '../../utils/handleLocalStorage';
 import handleAuthToken from './../../utils/handleAuthToken';
@@ -72,6 +73,8 @@ const Register = () => {
         });
         return;
       }
+
+      await cartApi.createCart();
 
       const { user } = res.data;
       const currentUser = {

@@ -1,26 +1,30 @@
 import { useEffect, Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Routers from './routes/Routers';
-import handleLocalStorage from './utils/handleLocalStorage';
-import handleAuthToken from './utils/handleAuthToken';
 import {
   removeCurrentUser,
   setCurrentUser,
   setLoadingCurrentUser,
 } from './redux/userSlice';
+import checkAuth from './utils/checkAuth';
 import authApi from './api/authApi';
+import { setCart, setIsLoadingCart } from './redux/cartSlice';
+import cartApi from './api/cartApi';
 
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   useEffect(() => {
-    const checkAuth = async () => {
-      const accessToken = handleLocalStorage.get('accessToken');
-      if (accessToken) {
-        handleAuthToken(accessToken);
+    const autoLogin = async () => {
+      dispatch(setLoadingCurrentUser(true));
+      if (!checkAuth()) {
+        dispatch(setLoadingCurrentUser(false));
+        return;
       }
       try {
         const res = await authApi.getCurrentUser();
@@ -40,8 +44,32 @@ function App() {
       }
       dispatch(setLoadingCurrentUser(false));
     };
-    checkAuth();
+
+    autoLogin();
   }, [dispatch]);
+
+  useEffect(() => {
+    const getCart = async () => {
+      dispatch(setIsLoadingCart(true));
+      if (!checkAuth()) {
+        dispatch(setIsLoadingCart(false));
+        return;
+      }
+      try {
+        const res = await cartApi.getCart();
+        const cart = res.data.cart;
+        if (!cart) {
+          return;
+        }
+        dispatch(setCart(cart));
+      } catch (error) {
+        removeCurrentUser();
+      }
+      dispatch(setIsLoadingCart(false));
+    };
+
+    getCart();
+  }, [currentUser]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

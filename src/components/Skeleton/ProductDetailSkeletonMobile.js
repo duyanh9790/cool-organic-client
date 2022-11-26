@@ -23,7 +23,10 @@ const ProductDetailSkeletonMobile = () => {
         <div className='w-full h-24 mb-4 skeleton'></div>
         <hr className='my-6' />
         <div className='h-10 mb-6 skeleton'></div>
-        <div className='mb-4 w-72 skeleton h-11'></div>
+        <div className='flex gap-6'>
+          <div className='mb-4 w-44 skeleton h-11 !rounded-full'></div>
+          <div className='mb-4 w-32 skeleton h-11 !rounded-full'></div>
+        </div>
         <div className='w-full h-5 skeleton'></div>
       </div>
     </Fragment>

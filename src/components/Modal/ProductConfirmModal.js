@@ -31,7 +31,7 @@ const ProductConfirmModal = ({
             </div>
             <div className='flex gap-5'>
               <div className='w-[97px] h-[97px] border-2 border-primaryColor'>
-                <img src={product.images[0].url} alt='Product Image' />
+                <img src={product.images[0].url} alt={product.name} />
               </div>
               <div>
                 <span className='block mb-3'>{product.name}</span>
@@ -63,6 +63,8 @@ const ProductConfirmModal = ({
 ProductConfirmModal.propTypes = {
   product: PropTypes.object.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
+  showModal: PropTypes.bool.isRequired,
+  classContainer: PropTypes.string.isRequired,
 };
 
 export default ProductConfirmModal;

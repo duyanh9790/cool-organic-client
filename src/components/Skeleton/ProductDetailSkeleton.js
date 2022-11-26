@@ -22,7 +22,10 @@ const ProductDetailSkeleton = () => {
         <div className='h-24 mb-4 skeleton'></div>
         <hr className='my-6' />
         <div className='h-8 mb-6 skeleton'></div>
-        <div className='mb-4 w-72 skeleton h-11'></div>
+        <div className='flex gap-6'>
+          <div className='mb-4 md:w-40 lg:w-52 skeleton h-11 !rounded-full'></div>
+          <div className='mb-4 w-32 lg:w-36 skeleton h-11 !rounded-full'></div>
+        </div>
         <div className='h-5 w-80 skeleton'></div>
       </div>
     </Fragment>

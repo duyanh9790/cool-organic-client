@@ -8,12 +8,14 @@ import RelatedProductList from './RelatedProductList';
 import productApi from './../../api/productApi';
 
 import { backgroundProductDetail } from '../../assets/images/common';
+import ProductConfirmModal from '../../components/Modal/ProductConfirmModal';
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState({});
   const [categorySlug, setCategorySlug] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showProductConfirmModal, setShowProductConfirmModal] = useState(false);
 
   useEffect(() => {
     const fetchProductDetail = async () => {
@@ -40,6 +42,7 @@ const ProductDetail = () => {
           <div className='container'>
             <ProductDetailContent
               product={product}
+              setShowProductConfirmModal={setShowProductConfirmModal}
               isLoading={isLoading}
               className='gap-6 lg:gap-0'
             />
@@ -54,6 +57,15 @@ const ProductDetail = () => {
             className='h-[200px] mt-8 w-full md:container'
           ></div>
           <RelatedProductList slug={slug} categorySlug={categorySlug} />
+
+          {!isLoading && (
+            <ProductConfirmModal
+              product={product}
+              showModal={showProductConfirmModal}
+              handleCloseModal={() => setShowProductConfirmModal(false)}
+              classContainer={product.slug}
+            />
+          )}
         </Fragment>
       )}
     </Fragment>

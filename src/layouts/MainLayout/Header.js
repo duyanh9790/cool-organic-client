@@ -69,7 +69,7 @@ const Header = () => {
   const wrapperInputRef = useRef(null);
   useCLickOutSide(wrapperInputRef, () => setShowSearchInput(false));
 
-  const products = useSelector((state) => state.cart.products);
+  const cart = useSelector((state) => state.cart);
   const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -308,9 +308,11 @@ const Header = () => {
         <div className='mr-3.5 ml-2.5 md:ml-0'>
           <Link to='/cart' className='relative'>
             <i className='md:p-1.5 fa-solid fa-cart-shopping'></i>
-            <span className='gradient-primary absolute text-white text-xs bottom-[80%] left-[50%] top-[-70%] w-[26px] h-[26px] rounded-full flex items-center justify-center'>
-              {products.length}
-            </span>
+            {currentUser && !cart.isLoading && (
+              <span className='flex gradient-primary absolute text-white text-sm bottom-[80%] left-[50%] top-[-70%] w-[26px] h-[26px] rounded-full items-center justify-center'>
+                {cart.products.length <= 99 ? cart.products.length : '99+'}
+              </span>
+            )}
           </Link>
         </div>
       </div>

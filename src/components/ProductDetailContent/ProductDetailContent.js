@@ -1,6 +1,7 @@
-import { useState, useLayoutEffect, Fragment } from 'react';
+import { useState, useLayoutEffect, Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
@@ -9,19 +10,26 @@ import ProductDetailSkeleton from '../../components/Skeleton/ProductDetailSkelet
 import ProductDetailSkeletonMobile from '../Skeleton/ProductDetailSkeletonMobile';
 import formatPrice from '../../utils/formatPrice';
 import breakPoints from './../../utils/breakPoints';
-import { addToCart } from '../../redux/cartSlice';
+import { setCart } from '../../redux/cartSlice';
 
 import './ProductDetailContent.scss';
+import cartApi from '../../api/cartApi';
 
 const ProductDetailContent = ({
-  isLoading = false,
   product,
+  setShowProductConfirmModal,
+  isLoading = false,
   className = '',
+  setShowModal,
 }) => {
   const [currentImage, setCurrentImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const cart = useSelector((state) => state.cart);
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     if (!isLoading) {
@@ -39,11 +47,21 @@ const ProductDetailContent = ({
     if (invalidQuantity) {
       return;
     }
-    if (quantity > product.inventory[0].quantity) {
-      toast.info(
-        `Chỉ còn ${product.inventory[0].quantity} sản phẩm còn lại cho sản phẩm này`
-      );
-      setQuantity(product.inventory[0].quantity);
+
+    const productIndex = cart.products.findIndex(
+      (item) => item.product.id === product.id
+    );
+    const currentQuantityInCart = cart.products[productIndex]?.quantity || 0;
+    if (currentQuantityInCart + quantity > product.inventory[0].quantity) {
+      if (product.inventory[0].quantity === 0) {
+        toast.info('Sản phẩm đã hết hàng. Vui lòng quay lại sau!');
+        return;
+      } else {
+        toast.info(
+          `Chỉ còn ${product.inventory[0].quantity} sản phẩm còn lại cho sản phẩm này`
+        );
+      }
+      setQuantity(product.inventory[0].quantity - currentQuantityInCart);
       return;
     }
     setQuantity(quantity);
@@ -52,6 +70,50 @@ const ProductDetailContent = ({
   const handleBlurInputQuantity = (e) => {
     if (e.target.value === '') {
       setQuantity(1);
+    }
+  };
+
+  const updateCart = async () => {
+    let products = [...cart.products];
+    const index = products.findIndex((item) => item.product.id === product.id);
+    if (index === -1) {
+      products.push({
+        product,
+        quantity: quantity,
+      });
+    } else {
+      const newQuantity = products[index].quantity + 1;
+      if (newQuantity > product.inventory[0].quantity) {
+        if (product.inventory[0].quantity === 0) {
+          toast.info('Sản phẩm đã hết hàng. Vui lòng quay lại sau!');
+        } else {
+          toast.info(
+            `Chỉ còn ${product.inventory[0].quantity} sản phẩm còn lại cho sản phẩm này`
+          );
+        }
+        return;
+      }
+      products[index] = {
+        ...products[index],
+        quantity: products[index].quantity + quantity,
+      };
+    }
+
+    const productList = products.map((item) => {
+      return {
+        product: item.product.id,
+        quantity: item.quantity,
+      };
+    });
+    try {
+      const res = await cartApi.updateCart(productList);
+      dispatch(setCart(res.data.cart));
+      if (setShowModal) {
+        setShowModal(false);
+      }
+      setShowProductConfirmModal(true);
+    } catch (error) {
+      toast.error('Thêm sản phẩm vào giỏ hàng không thành công!');
     }
   };
 
@@ -188,12 +250,37 @@ const ProductDetailContent = ({
                   </span>
                 </div>
               </div>
-              <button
-                className='gradient-primary text-white font-bold py-2 px-5 min-w-[270px] text-base mb-4 rounded-full hover:text-primaryColor hover:bg-none border-2 border-transparent hover:border-primaryColor transition-all'
-                onClick={() => dispatch(addToCart({ product, quantity: 1 }))}
-              >
-                Cho vào giỏ hàng
-              </button>
+              <div className='flex gap-6'>
+                <button
+                  className='gradient-primary text-white font-bold py-2 px-5 md:min-w-[160px] lg:min-w-[200px] text-base mb-4 rounded-full hover:text-primaryColor hover:bg-none border-2 border-transparent hover:border-primaryColor transition-all'
+                  onClick={() => {
+                    if (!currentUser) {
+                      toast.info(
+                        'Bạn cần đăng nhập để thêm sản phẩm này vào giỏ hàng'
+                      );
+                      navigate('/login');
+                      return;
+                    }
+                    updateCart();
+                  }}
+                >
+                  Cho vào giỏ hàng
+                </button>
+                <button
+                  className='px-5 py-2 mb-4 text-base font-bold text-white transition-all border-2 border-transparent rounded-full lg:px-7 bg-primaryColor hover:bg-transparent hover:text-primaryColor hover:border-primaryColor'
+                  onClick={async () => {
+                    if (!currentUser) {
+                      toast.info('Bạn cần đăng nhập để mua sản phẩm này');
+                      navigate('/login');
+                      return;
+                    }
+                    await updateCart();
+                    navigate('/cart');
+                  }}
+                >
+                  Mua ngay
+                </button>
+              </div>
               <p className='text-sm'>
                 Gọi đặt mua:
                 <span className='ml-1 text-primaryColor'>19006750 </span>
@@ -209,8 +296,10 @@ const ProductDetailContent = ({
 
 ProductDetailContent.propTypes = {
   product: PropTypes.object.isRequired,
+  setShowProductConfirmModal: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   className: PropTypes.string,
+  setShowModal: PropTypes.func,
 };
 
 export default ProductDetailContent;
