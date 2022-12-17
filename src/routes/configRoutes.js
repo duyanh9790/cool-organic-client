@@ -11,6 +11,7 @@ import UserInfo from '../pages/UserInfo';
 import Introduce from '../pages/Introduce';
 import Contact from '../pages/Contact';
 import CheckOut from '../pages/CheckOut';
+import ThankYou from '../pages/ThankYou';
 import Search from '../pages/Search';
 import NotFound from '../pages/NotFound';
 
@@ -42,6 +43,12 @@ const routes = [
     roleListPermission: ['admin', 'user'],
   },
   {
+    path: '/checkout/thank-you/:orderId',
+    component: ThankYou,
+    protected: true,
+    roleListPermission: ['admin', 'user'],
+  },
+  {
     path: '/search',
     component: Search,
   },
@@ -69,7 +76,7 @@ const routes = [
     component: Register,
   },
   {
-    path: '/my-info',
+    path: '/my-info/*',
     component: UserInfo,
     protected: true,
     roleListPermission: ['admin', 'user'],

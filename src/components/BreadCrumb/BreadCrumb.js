@@ -33,7 +33,8 @@ const BreadCrumb = ({ children, isLoading = false }) => {
             </h1>
           </div>
           <div>
-            {children && children === 'Trang không tồn tại' ? (
+            {breadcrumbs[breadcrumbs.length - 1].match.route.breadCrumbName ===
+            'Trang không tồn tại' ? (
               <Fragment>
                 <Link to='/' className='text-base hover:text-primaryColor'>
                   Trang chủ

@@ -8,12 +8,12 @@ const NotFound = () => {
     <div>
       <BreadCrumb>Trang không tồn tại</BreadCrumb>
       <div className='container flex flex-col items-center justify-center'>
-        <div className='h-[600px]'>
-          <img src={BackgroundNotFound} alt='NOT FOUND PAGE' />
+        <div className='h-[600px] select-none'>
+          <img src={BackgroundNotFound} alt='Page Not Found' />
         </div>
         <h2 className='mt-6 text-lg'>
-          Trang này hiện không có hoặc đã bị gỡ! Vui lòng quay lại
-          <Link to='/' className='ml-1.5 text-xl text-primaryColor'>
+          Trang này hiện không có hoặc đã bị gỡ! Vui lòng quay lại{' '}
+          <Link to='/' className='text-xl text-primaryColor hover:opacity-80'>
             trang chủ
           </Link>
         </h2>

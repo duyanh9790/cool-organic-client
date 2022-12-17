@@ -21,19 +21,19 @@ const routes = [
   },
   {
     path: '/my-info',
-    breadCrumbName: 'Trang khách hàng',
+    breadCrumbName: 'Tài khoản',
   },
   {
     path: '/my-info/orders',
-    breadCrumbName: 'Trang đơn hàng',
+    breadCrumbName: 'Đơn hàng',
+  },
+  {
+    path: '/my-info/orders/:orderId',
+    breadCrumbName: 'Chi tiết đơn hàng',
   },
   {
     path: '/my-info/change-password',
     breadCrumbName: 'Thay đổi mật khẩu',
-  },
-  {
-    path: '/my-info/address',
-    breadCrumbName: 'Địa chỉ khách hàng',
   },
   {
     path: '/products/:slug',
