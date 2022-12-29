@@ -21,14 +21,14 @@ const OrderDetail = () => {
         const res = await orderApi.getOrderByOrderId(orderId);
         setOrder(res.data.order);
       } catch (error) {
-        toast('Đã có lỗi xảy ra, Vui lòng thử lại sau!');
+        toast.error('Đã có lỗi xảy ra, Vui lòng thử lại sau!');
         navigate(-1);
       }
       setIsLoading(false);
     };
 
     getOrder();
-  }, [orderId]);
+  }, [orderId, navigate]);
 
   return (
     <Fragment>

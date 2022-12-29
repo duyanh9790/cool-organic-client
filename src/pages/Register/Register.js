@@ -74,18 +74,22 @@ const Register = () => {
         return;
       }
 
-      await cartApi.createCart();
-
       const { user } = res.data;
       const currentUser = {
+        id: user._id,
         fullName: user.fullName,
         email: user.email,
+        phone: user.phone,
+        address: user.address,
         role: user.role,
         createdAt: user.createdAt,
       };
       dispatch(setCurrentUser(currentUser));
       handleLocalStorage.set('accessToken', res.data.accessToken);
       handleAuthToken(res.data.accessToken);
+
+      await cartApi.createCart();
+
       toast.success(res.data.message);
 
       if (searchParams.get('redirect')) {
