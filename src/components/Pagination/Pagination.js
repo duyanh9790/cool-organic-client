@@ -8,6 +8,7 @@ const Pagination = ({
   currentPage,
   onPageChange,
   isLoading = false,
+  className = '',
 }) => {
   return (
     <div>
@@ -53,7 +54,9 @@ const Pagination = ({
           pageRangeDisplayed={2}
           pageCount={totalPages}
           renderOnZeroPageCount={null}
-          className='flex justify-center gap-3 mt-20'
+          className={`flex justify-center gap-3 ${
+            className ? `${className}` : 'mt-20'
+          }`}
           pageLinkClassName='w-[40px] h-[40px] rounded-full border border-[#ccc] flex items-center justify-center hover:border-primaryColor hover:text-primaryColor'
           activeLinkClassName='!border-primaryColor bg-primaryColor cursor-default text-white font-bold hover:text-white'
         />
@@ -67,6 +70,7 @@ Pagination.propTypes = {
   currentPage: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 export default Pagination;

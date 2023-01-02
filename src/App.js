@@ -33,8 +33,11 @@ function App() {
           return;
         }
         const currentUser = {
+          id: user._id,
           fullName: user.fullName,
           email: user.email,
+          phone: user.phone,
+          address: user.address,
           role: user.role,
           createdAt: user.createdAt,
         };

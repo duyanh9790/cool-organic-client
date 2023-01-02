@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import handleLocalStorage from './../utils/handleLocalStorage';
+import handleAuthToken from './../utils/handleAuthToken';
 
 const userSlice = createSlice({
   name: 'user',
@@ -16,6 +18,7 @@ const userSlice = createSlice({
     },
     removeCurrentUser: (state) => {
       handleLocalStorage.remove('accessToken');
+      handleAuthToken();
       state.currentUser = null;
     },
   },

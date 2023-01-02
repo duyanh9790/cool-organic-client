@@ -29,7 +29,7 @@ Modal.propTypes = {
 
 const Header = ({ children, handleCloseModal, className = '' }) => {
   return (
-    <div className={`${className} bg-white flex`}>
+    <div className={`${className} bg-white flex items-start`}>
       {children}
       <button
         onClick={handleCloseModal}

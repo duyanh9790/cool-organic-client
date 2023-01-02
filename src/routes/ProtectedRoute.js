@@ -15,10 +15,14 @@ const ProtectedRoute = ({ children, roleListPermission }) => {
   useEffect(() => {
     if (!currentUser && !isLoadingCurrentUser) {
       toast.info('Bạn cần đăng nhập để tiếp tục');
-      navigate(`/login?redirect=${window.location.pathname}`);
+      if (window.location.pathname.includes('admin')) {
+        navigate(`/admin/login?redirect=${window.location.pathname}`);
+      } else {
+        navigate(`/login?redirect=${window.location.pathname}`);
+      }
     }
     if (currentUser && !isPermittedRole && !isLoadingCurrentUser) {
-      toast.info('Bạn không có quyền truy cập trang này');
+      toast.error('Bạn không có quyền truy cập trang này');
       navigate('/');
     }
   }, [currentUser, isLoadingCurrentUser, isPermittedRole, navigate]);

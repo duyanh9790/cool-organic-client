@@ -1,8 +1,8 @@
 import axiosClient from './axiosClient';
 
 const cartApi = {
-  createCart: () => {
-    return axiosClient.post('/cart');
+  createCart: (userId) => {
+    return axiosClient.post('/cart', { userId });
   },
   getCart: () => {
     return axiosClient.get('/cart');
@@ -18,8 +18,8 @@ const cartApi = {
       data: { productId },
     });
   },
-  deleteCart: () => {
-    return axiosClient.delete('/cart');
+  deleteCart: (id) => {
+    return axiosClient.delete(`/cart/${id}`);
   },
 };
 
