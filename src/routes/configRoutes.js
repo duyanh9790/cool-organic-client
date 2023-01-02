@@ -5,6 +5,7 @@ import ProductDetail from '../pages/ProductDetail';
 import CategoryProduct from '../pages/CategoryProduct';
 import Cart from '../pages/Cart';
 import Admin from '../pages/Admin';
+import AdminLogin from '../pages/Admin/Login';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import UserInfo from '../pages/UserInfo';
@@ -15,7 +16,7 @@ import ThankYou from '../pages/ThankYou';
 import Search from '../pages/Search';
 import NotFound from '../pages/NotFound';
 
-import { ADMIN_LAYOUT } from '../constants/layouts';
+import { ADMIN_LAYOUT, NO_LAYOUT } from '../constants/layouts';
 
 const routes = [
   {
@@ -61,11 +62,16 @@ const routes = [
     component: CategoryProduct,
   },
   {
-    path: '/admin',
+    path: '/admin/*',
     component: Admin,
     protected: true,
     roleListPermission: ['admin'],
     layout: ADMIN_LAYOUT,
+  },
+  {
+    path: '/admin/login',
+    component: AdminLogin,
+    layout: NO_LAYOUT,
   },
   {
     path: '/login',

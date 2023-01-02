@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import routes from './configRoutes';
@@ -5,17 +6,19 @@ import ProtectedRoute from './ProtectedRoute';
 import MainLayout from '../layouts/MainLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
-import { ADMIN_LAYOUT } from '../constants/layouts';
+import { ADMIN_LAYOUT, NO_LAYOUT } from '../constants/layouts';
+
+const layouts = {
+  [ADMIN_LAYOUT]: AdminLayout,
+  [NO_LAYOUT]: Fragment,
+};
 
 const Routers = () => {
   return (
     <Routes>
       {routes.map((route, index) => {
         let Component = route.component;
-        let Layout = MainLayout;
-        if (route.layout === ADMIN_LAYOUT) {
-          Layout = AdminLayout;
-        }
+        let Layout = layouts[route.layout] || MainLayout;
 
         if (route.protected) {
           Component = (
