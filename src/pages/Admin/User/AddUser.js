@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 import Loading from './../../../components/Loading/Loading';
 import userApi from './../../../api/userApi';
@@ -34,6 +34,10 @@ const AddUser = () => {
       .string()
       .required('Mật khẩu là bắt buộc')
       .min(8, 'Mật khẩu phải tối thiểu 8 kí tự'),
+    confirmPassword: yup
+      .string()
+      .required('Vui lòng xác nhận mật khẩu')
+      .oneOf([yup.ref('password'), null], 'Mật khẩu không trùng khớp'),
   });
 
   const {
@@ -47,6 +51,7 @@ const AddUser = () => {
       fullName: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
     resolver: yupResolver(schema),
   });
@@ -54,7 +59,6 @@ const AddUser = () => {
   const handleCreateUser = async (values) => {
     if (!values || !selectedRole) return;
     setIsLoading(true);
-    console.log('role: ', selectedRole);
     const userInfo = {
       ...values,
       role: selectedRole.value,
@@ -63,7 +67,6 @@ const AddUser = () => {
     try {
       const res = await userApi.createUser(userInfo);
       await cartApi.createCart(res.data.user._id);
-      console.log('user: ', res.data.user);
       toast.success('Tạo người dùng thành công!');
     } catch (error) {
       toast.error(
@@ -119,8 +122,30 @@ const AddUser = () => {
               {...register('password')}
               autoComplete='current-password'
             />
+            <span
+              className={`block text-left mt-1 ml-3 ${
+                errors.password?.message ? 'text-red-500' : 'text-textColor'
+              }`}
+            >
+              {errors.password?.message || (
+                <span>
+                  <span className='font-bold text-red-500'>*</span> Sử dụng từ 8
+                  kí tự trở lên
+                </span>
+              )}
+            </span>
+          </div>
+          <div>
+            <input
+              type='password'
+              name='confirmPassword'
+              className='bg-white block w-full py-2.5 px-6 text-black border-2 border-borderColor outline-none min-h-[50px] rounded-xl focus:border-primaryColor hover:border-primaryColor'
+              placeholder='Nhập lại mật khẩu'
+              {...register('confirmPassword')}
+              autoComplete='confirmPassword'
+            />
             <span className='block mt-1 ml-3 text-left text-red-500'>
-              {errors.password?.message}
+              {errors.confirmPassword?.message}
             </span>
           </div>
           <div>

@@ -14,7 +14,6 @@ const ViewUser = () => {
       try {
         const res = await userApi.getUserById(id);
         setUser(res.data.user);
-        console.log(res.data.user);
       } catch (error) {
         console.log(error);
       }

@@ -1,7 +1,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Select from 'react-select';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 import Loading from './../../../components/Loading/Loading';
 import { LoadingCenter } from '../../../components/Loading';

@@ -12,7 +12,7 @@ import formatDate from '../../../utils/formatDate';
 import role from './../../../constants/role';
 
 const User = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,11 +45,10 @@ const User = () => {
   const handleDeleteUser = async () => {
     try {
       await userApi.deleteUser(currentUserId);
-      const res = await cartApi.deleteCart(currentUserId);
-      console.log(res);
-      toast.success('Xóa người dùng thành công!');
+      await cartApi.deleteCart(currentUserId);
       const newUsers = users.filter((user) => user.id !== currentUserId);
       setUsers(newUsers);
+      toast.success('Xóa người dùng thành công!');
     } catch (error) {
       console.log(error);
       toast.error('Xóa người dùng thất bại, Vui lòng thử lại sau!');
@@ -71,86 +70,105 @@ const User = () => {
           Thêm người dùng
         </Link>
       </div>
-      {isLoading ? (
+
+      {isLoading && users === null && (
         <div className='flex items-center justify-center h-[516px]'>
           <LoadingCenter />
         </div>
-      ) : (
+      )}
+
+      {!isLoading && users === null && (
+        <div className='flex items-center justify-center h-[516px]'>
+          <p className='text-xl font-bold'>
+            Có lỗi xảy ra phía Máy Chủ, Vui lòng thử lại sau!
+          </p>
+        </div>
+      )}
+
+      {!isLoading && users && (
         <Fragment>
-          <table className='w-full border border-collapse table-auto border-borderColor'>
-            <thead>
-              <tr>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  STT
-                </th>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  Họ Và Tên
-                </th>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  Email
-                </th>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  Quyền Hạn
-                </th>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  Ngày Tạo Tài Khoản
-                </th>
-                <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
-                  Thao Tác
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={user.id}>
-                  <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                    {(currentPage - 1) * 10 + index + 1}
-                  </td>
-                  <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                    {user.fullName}
-                  </td>
-                  <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                    {user.email}
-                  </td>
-                  <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                    {role[user.role]}
-                  </td>
-                  <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                    {formatDate(user.createdAt)}
-                  </td>
-                  <td className='px-1 py-2 font-semibold text-center border-b border-[#ccc]'>
-                    <Link
-                      className='py-2 px-5 inline-block border rounded-lg text-primaryColor border-[#ccc] hover:text-white hover:bg-primaryColor transition-colors'
-                      to={`${window.location.pathname}/view/${user.id}`}
-                    >
-                      Xem
-                    </Link>
-                    <Link
-                      className='ml-2.5 py-2 inline-block px-5 border rounded-lg text-thirdColor border-[#ccc] hover:text-white hover:bg-thirdColor transition-colors'
-                      to={`${window.location.pathname}/update/${user.id}`}
-                    >
-                      Sửa
-                    </Link>
-                    <button
-                      className='ml-2.5 text-red-500 py-2 px-5 border rounded-lg  border-[#ccc] hover:bg-red-500 hover:text-white transition-colors'
-                      onClick={() => {
-                        setShowModal(true);
-                        setCurrentUserId(user.id);
-                      }}
-                    >
-                      Xóa
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page.selected + 1)}
-            className='my-8'
-          />
+          {users.length === 0 ? (
+            <div className='flex items-center justify-center h-[516px]'>
+              <p className='text-xl font-bold'>Hiện không có người dùng nào</p>
+            </div>
+          ) : (
+            <Fragment>
+              <table className='w-full border border-collapse table-auto border-borderColor'>
+                <thead>
+                  <tr>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      STT
+                    </th>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      Họ Và Tên
+                    </th>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      Email
+                    </th>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      Quyền Hạn
+                    </th>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      Ngày Tạo Tài Khoản
+                    </th>
+                    <th className='px-1 py-3.5 font-bold text-center border-b border-[#ccc]'>
+                      Thao Tác
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user, index) => (
+                    <tr key={user.id}>
+                      <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
+                        {(currentPage - 1) * 10 + index + 1}
+                      </td>
+                      <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
+                        {user.fullName}
+                      </td>
+                      <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
+                        {user.email}
+                      </td>
+                      <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
+                        {role[user.role]}
+                      </td>
+                      <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
+                        {formatDate(user.createdAt)}
+                      </td>
+                      <td className='px-1 py-2 font-semibold text-center border-b border-[#ccc]'>
+                        <Link
+                          className='py-2 px-5 inline-block border rounded-lg text-primaryColor border-[#ccc] hover:text-white hover:bg-primaryColor transition-colors'
+                          to={`${window.location.pathname}/view/${user.id}`}
+                        >
+                          Xem
+                        </Link>
+                        <Link
+                          className='ml-2.5 py-2 inline-block px-5 border rounded-lg text-thirdColor border-[#ccc] hover:text-white hover:bg-thirdColor transition-colors'
+                          to={`${window.location.pathname}/update/${user.id}`}
+                        >
+                          Sửa
+                        </Link>
+                        <button
+                          className='ml-2.5 text-red-500 py-2 px-5 border rounded-lg  border-[#ccc] hover:bg-red-500 hover:text-white transition-colors'
+                          onClick={() => {
+                            setShowModal(true);
+                            setCurrentUserId(user.id);
+                          }}
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page.selected + 1)}
+                className='my-8'
+              />
+            </Fragment>
+          )}
         </Fragment>
       )}
 
