@@ -4,63 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import useCLickOutSide from '../../hooks/useClickOutSide';
 import { removeCurrentUser } from '../../redux/userSlice';
+import categoryApi from './../../api/categoryApi';
 
 import { logo } from '../../assets/images/common';
 
-const menuItems = [
-  {
-    name: 'Trang chủ',
-    path: '/',
-  },
-  {
-    name: 'Giới thiệu',
-    path: '/introduce',
-  },
-  {
-    name: 'Sản phẩm',
-    path: '/products',
-    children: [
-      {
-        name: 'Rau củ',
-        path: '/rau-cu',
-      },
-      {
-        name: 'Hoa quả',
-        path: '/hoa-qua',
-      },
-      {
-        name: 'Hải sản',
-        path: '/hai-san',
-      },
-      {
-        name: 'Các loại hạt',
-        path: '/cac-loai-hat',
-      },
-      {
-        name: 'Thực phẩm tươi sống',
-        path: '/thuc-pham-tuoi-song',
-      },
-    ],
-  },
-  {
-    name: 'Liên hệ',
-    path: '/contact',
-  },
-];
-
-const menuItemsOnMobileTablet = [
-  ...menuItems,
-  {
-    name: 'Đăng nhập',
-    path: '/login',
-  },
-  {
-    name: 'Đăng ký',
-    path: '/register',
-  },
-];
-
 const Header = () => {
+  const [categories, setCategories] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
@@ -92,6 +41,64 @@ const Header = () => {
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [navigate]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await categoryApi.getCategories({
+          params: {
+            limit: 5,
+          },
+        });
+        const categories = [];
+        for (let i = 0; i < res.data.categories.length; i++) {
+          const category = res.data.categories[i];
+          const obj = {
+            name: category.name,
+            path: `/${category.categorySlug}`,
+          };
+          categories.push(obj);
+        }
+        setCategories(categories);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getCategories();
+  }, []);
+
+  const menuItems = [
+    {
+      name: 'Trang chủ',
+      path: '/',
+    },
+    {
+      name: 'Giới thiệu',
+      path: '/introduce',
+    },
+    {
+      name: 'Sản phẩm',
+      path: '/products',
+      children: [...categories],
+    },
+    {
+      name: 'Liên hệ',
+      path: '/contact',
+    },
+  ];
+
+  const menuItemsOnMobileTablet = [
+    ...menuItems,
+    {
+      name: 'Đăng nhập',
+      path: '/login',
+    },
+    {
+      name: 'Đăng ký',
+      path: '/register',
+    },
+  ];
 
   return (
     <div className='container h-[120px] flex items-center justify-between'>
