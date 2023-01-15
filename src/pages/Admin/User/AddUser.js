@@ -155,6 +155,7 @@ const AddUser = () => {
               render={({ field }) => (
                 <Select
                   {...field}
+                  isSearchable={false}
                   styles={{
                     control: (baseStyles, state) => ({
                       ...baseStyles,

@@ -110,6 +110,7 @@ const UpdateUser = () => {
               <div>
                 <Select
                   name='role'
+                  isSearchable={false}
                   styles={{
                     control: (baseStyles, state) => ({
                       ...baseStyles,

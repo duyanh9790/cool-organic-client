@@ -1,6 +1,9 @@
 import axiosClient from './axiosClient';
 
 const productApi = {
+  createProduct: (data) => {
+    return axiosClient.post('/products', data);
+  },
   getProducts: (params = {}) => {
     return axiosClient.get('/products', params);
   },
@@ -16,8 +19,8 @@ const productApi = {
   getRelatedProducts: (params = {}) => {
     return axiosClient.get('/products/related', params);
   },
-  createProduct: (data) => {
-    return axiosClient.post('/products', data);
+  uploadImages: (formData) => {
+    return axiosClient.post('/products/upload-multiple-files', formData);
   },
   updateProduct: (slug, data) => {
     return axiosClient.put(`/products/${slug}`, data);

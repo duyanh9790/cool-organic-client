@@ -138,8 +138,12 @@ const ProductDetailContent = ({
           <Fragment>
             <div className='flex items-center justify-center w-full'>
               <div className='w-full'>
-                <div className='h-full w-full lg:h-[500px] lg:w-[500px] select-none'>
-                  <img src={currentImage} alt={product.name} />
+                <div className='flex items-center justify-center w-full h-full select-none'>
+                  <img
+                    src={currentImage}
+                    alt={product.name}
+                    className='lg:h-[500px] lg:w-[500px] w-full h-full'
+                  />
                 </div>
                 <Swiper
                   slidesPerView={3}
