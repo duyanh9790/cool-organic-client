@@ -2,6 +2,7 @@ import { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import ChangePerPage from '../components/ChangePerPage';
 import { LoadingCenter } from '../../../components/Loading';
 import Pagination from '../../../components/Pagination/Pagination';
 import Modal from '../../../components/Modal/Modal';
@@ -15,6 +16,10 @@ const Product = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState({
+    value: 10,
+    label: '10',
+  });
   const [totalPages, setTotalPages] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
@@ -25,7 +30,7 @@ const Product = () => {
         const res = await productApi.getProducts({
           params: {
             page: currentPage,
-            limit: 10,
+            limit: limit.value,
           },
         });
         setProducts(res.data.products);
@@ -38,7 +43,7 @@ const Product = () => {
     };
 
     getProducts();
-  }, [currentPage]);
+  }, [currentPage, limit]);
 
   const handleDeleteProduct = async () => {
     try {
@@ -59,8 +64,8 @@ const Product = () => {
 
   return (
     <div>
-      <div className='flex items-center justify-between'>
-        <h2 className='pt-8 pb-5 text-2xl font-semibold'>Sản Phẩm</h2>
+      <div className='flex items-center justify-between pt-8 mb-3.5'>
+        <h2 className='text-2xl font-semibold'>Sản Phẩm</h2>
         <Link
           className='py-3.5 px-5 inline-block border rounded-lg text-white font-bold bg-primaryColor border-[#ccc] hover:opacity-80 transition-opacity'
           to={`${window.location.pathname}/add`}
@@ -93,6 +98,11 @@ const Product = () => {
             </div>
           ) : (
             <Fragment>
+              <ChangePerPage
+                textDisplay='Sản phẩm mỗi trang: '
+                limit={limit}
+                setLimit={setLimit}
+              />
               <table className='w-full border border-collapse table-auto border-borderColor'>
                 <thead>
                   <tr>
@@ -126,7 +136,7 @@ const Product = () => {
                   {products.map((product, index) => (
                     <tr key={product.id}>
                       <td className='px-1 font-semibold text-center border-b border-[#ccc]'>
-                        {(currentPage - 1) * 10 + index + 1}
+                        {(currentPage - 1) * limit.value + index + 1}
                       </td>
                       <td className='px-1 font-semibold text-center border-b border-[#ccc]'>
                         {product.name}

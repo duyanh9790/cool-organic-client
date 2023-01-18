@@ -5,7 +5,7 @@ import './Loading.scss';
 const LoadingCenter = ({ className = '' }) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <div className='loader-spinner'> </div>
+      <div className='loader-spinner w-[30px] h-[30px]'> </div>
     </div>
   );
 };

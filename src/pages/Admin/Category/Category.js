@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment, useRef } from 'react';
 import { toast } from 'react-toastify';
 
+import ChangePerPage from '../components/ChangePerPage';
 import { LoadingCenter } from '../../../components/Loading';
 import Portal from '../../../components/Modal/Portal';
 import Pagination from '../../../components/Pagination/Pagination';
@@ -13,6 +14,10 @@ const Category = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState({
+    value: 10,
+    label: '10',
+  });
   const [totalPages, setTotalPages] = useState(1);
 
   const [showModalAddCategory, setShowModalAddCategory] = useState(false);
@@ -30,7 +35,7 @@ const Category = () => {
         const res = await categoryApi.getCategories({
           params: {
             page: currentPage,
-            limit: 10,
+            limit: limit.value,
           },
         });
         const result = [];
@@ -53,7 +58,7 @@ const Category = () => {
     };
 
     getCategories();
-  }, [currentPage]);
+  }, [currentPage, limit]);
 
   const handleAddCategory = async () => {
     const categoryName = inputAddCategoryRef.current.value;
@@ -137,8 +142,8 @@ const Category = () => {
 
   return (
     <div>
-      <div className='flex items-center justify-between'>
-        <h2 className='pt-8 pb-5 text-2xl font-semibold'>Danh Mục</h2>
+      <div className='flex items-center justify-between mb-3.5 pt-8'>
+        <h2 className='text-2xl font-semibold'>Danh Mục</h2>
         <button
           className='py-3.5 px-5 inline-block border rounded-lg text-white font-bold bg-primaryColor border-[#ccc] hover:opacity-80 transition-opacity'
           onClick={() => {
@@ -172,6 +177,11 @@ const Category = () => {
             </div>
           ) : (
             <Fragment>
+              <ChangePerPage
+                textDisplay='Danh mục mỗi trang: '
+                limit={limit}
+                setLimit={setLimit}
+              />
               <table className='w-full border border-collapse table-auto border-borderColor'>
                 <thead>
                   <tr>
@@ -193,7 +203,7 @@ const Category = () => {
                   {categories.map((category, index) => (
                     <tr key={category.id}>
                       <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                        {(currentPage - 1) * 10 + index + 1}
+                        {(currentPage - 1) * limit.value + index + 1}
                       </td>
                       <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
                         {category.name}
@@ -312,8 +322,8 @@ const Category = () => {
                 Cập nhật tên cho danh mục{' '}
                 <span className='font-semibold'>{currentCategory.name}</span>
               </p>
-              <div className='text-base mb-3 leading-5'>
-                <span className='text-red-500 font-semibold'>* Lưu ý: </span>
+              <div className='mb-3 text-base leading-5'>
+                <span className='font-semibold text-red-500'>* Lưu ý: </span>
                 Khi cập nhật tên cho danh mục, tất cả sản phẩm thuộc danh mục
                 này sẽ được cập nhật với tên danh mục mới.
               </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from 'react';
 import { toast } from 'react-toastify';
 
+import ChangePerPage from '../components/ChangePerPage';
 import { LoadingCenter } from '../../../components/Loading';
 import Pagination from '../../../components/Pagination/Pagination';
 import Modal from '../../../components/Modal/Modal';
@@ -15,6 +16,10 @@ const Inventory = () => {
   const [errorQuantity, setErrorQuantity] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState({
+    value: 10,
+    label: '10',
+  });
   const [totalPages, setTotalPages] = useState(1);
   const [showModalDeleteProduct, setShowModalDeleteProduct] = useState(false);
   const [showModalUpdateQuantity, setShowModalUpdateQuantity] = useState(false);
@@ -26,7 +31,7 @@ const Inventory = () => {
         const res = await inventoryApi.getProductsInventory({
           params: {
             page: currentPage,
-            limit: 10,
+            limit: limit.value,
           },
         });
         setProducts(res.data.products);
@@ -39,7 +44,7 @@ const Inventory = () => {
     };
 
     getProducts();
-  }, [currentPage]);
+  }, [currentPage, limit]);
 
   const handleDeleteProduct = async () => {
     try {
@@ -91,8 +96,8 @@ const Inventory = () => {
 
   return (
     <div>
-      <div className='flex items-center justify-between'>
-        <h2 className='pt-8 pb-5 text-2xl font-semibold'>Kho Hàng</h2>
+      <div className='flex items-center justify-between mb-3.5 pt-8'>
+        <h2 className='text-2xl font-semibold'>Kho Hàng</h2>
       </div>
       {isLoading && products === null && (
         <div className='flex items-center justify-center h-[516px]'>
@@ -118,6 +123,11 @@ const Inventory = () => {
             </div>
           ) : (
             <Fragment>
+              <ChangePerPage
+                textDisplay='Sản phẩm mỗi trang: '
+                limit={limit}
+                setLimit={setLimit}
+              />
               <table className='w-full border border-collapse table-auto border-borderColor'>
                 <thead>
                   <tr>
@@ -150,7 +160,7 @@ const Inventory = () => {
                     return (
                       <tr key={product.id}>
                         <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
-                          {(currentPage - 1) * 10 + index + 1}
+                          {(currentPage - 1) * limit.value + index + 1}
                         </td>
                         <td className='px-1 py-5 font-semibold text-center border-b border-[#ccc]'>
                           {product.name}
