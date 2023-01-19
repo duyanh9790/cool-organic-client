@@ -1,25 +1,34 @@
 import { useState, useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import orderApi from './../../api/orderApi';
-import formatDate from './../../utils/formatDate';
 import { LoadingCenter } from '../../components/Loading';
+import formatDate from './../../utils/formatDate';
 import formatPrice from './../../utils/formatPrice';
+import orderApi from './../../api/orderApi';
 
-const OrderDetail = () => {
+const OrderDetail = ({ handleSetStatusOrder, isFetch }) => {
   const [order, setOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { orderId } = useParams();
+  const { id } = useParams();
+  const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getOrder = async () => {
       setIsLoading(true);
       try {
-        const res = await orderApi.getOrderByOrderId(orderId);
-        setOrder(res.data.order);
+        const res = await orderApi.getOrderByOrderId(id);
+        const order = res.data.order;
+        if (handleSetStatusOrder) {
+          handleSetStatusOrder(order);
+        }
+        if (order.userId === currentUser.id || currentUser.role === 'admin') {
+          setOrder(order);
+        }
       } catch (error) {
         toast.error('Đã có lỗi xảy ra, Vui lòng thử lại sau!');
         navigate(-1);
@@ -28,7 +37,7 @@ const OrderDetail = () => {
     };
 
     getOrder();
-  }, [orderId, navigate]);
+  }, [id, currentUser.id, currentUser.role, isFetch, navigate]);
 
   return (
     <Fragment>
@@ -39,8 +48,10 @@ const OrderDetail = () => {
       )}
 
       {!isLoading && !order && (
-        <div>
-          <h2>Không tìm thấy đơn hàng</h2>
+        <div className='flex items-center justify-center h-60'>
+          <h2 className='text-xl font-semibold'>
+            Hiện không tìm thấy đơn hàng. Vui lòng thử lại sau!
+          </h2>
         </div>
       )}
 
@@ -178,6 +189,11 @@ const OrderDetail = () => {
       )}
     </Fragment>
   );
+};
+
+OrderDetail.propTypes = {
+  handleSetStatusOrder: PropTypes.func,
+  isFetch: PropTypes.bool,
 };
 
 export default OrderDetail;

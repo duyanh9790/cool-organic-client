@@ -9,8 +9,6 @@ import AddProduct from './Product/AddProduct';
 import UpdateProduct from './Product/UpdateProduct';
 import Order from './Order/Order';
 import ViewOrder from './Order/ViewOrder';
-import AddOrder from './Order/AddOrder';
-import UpdateOrder from './Order/UpdateOrder';
 import Category from './Category/Category';
 import Inventory from './Inventory/Inventory';
 
@@ -27,8 +25,6 @@ const Admin = () => {
       <Route path='/products/update/:slug' element={<UpdateProduct />} />
       <Route path='/orders' element={<Order />} />
       <Route path='/orders/view/:id' element={<ViewOrder />} />
-      <Route path='/orders/add' element={<AddOrder />} />
-      <Route path='/orders/update/:id' element={<UpdateOrder />} />
       <Route path='/categories' element={<Category />} />
       <Route path='/inventory' element={<Inventory />} />
     </Routes>
