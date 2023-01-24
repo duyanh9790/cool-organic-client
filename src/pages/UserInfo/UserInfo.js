@@ -60,7 +60,7 @@ const UserInfo = () => {
           <Routes>
             <Route index element={<UserInfoContent />} />
             <Route path='/orders' element={<OrderHistory />} />
-            <Route path='/orders/:orderId' element={<OrderDetail />} />
+            <Route path='/orders/:id' element={<OrderDetail />} />
             <Route path='/change-password' element={<ChangePassword />} />
             <Route path='/*' element={<NotFound />} />
           </Routes>

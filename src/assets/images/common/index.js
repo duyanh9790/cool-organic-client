@@ -17,3 +17,4 @@ export { default as brand5 } from './brand_5.png';
 export { default as brand6 } from './brand_6.png';
 export { default as backgroundProductDetail } from './bg_product_detail.png';
 export { default as BackgroundNotFound } from './notfound.png';
+export { default as checkIcon } from './checkIcon.svg';
