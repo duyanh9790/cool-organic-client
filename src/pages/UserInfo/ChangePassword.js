@@ -66,7 +66,7 @@ const ChangePassword = () => {
           <label className='block mb-2.5'>Mật khẩu cũ *</label>
           <input
             type='password'
-            className='px-6 py-3 rounded-full w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
+            className='px-6 py-3 rounded-full w-full md:w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
             {...register('password')}
             autoComplete='password'
           />
@@ -78,7 +78,7 @@ const ChangePassword = () => {
           <label className='block mb-2.5'>Mật khẩu mới *</label>
           <input
             type='password'
-            className='px-6 py-3 rounded-full w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
+            className='px-6 py-3 rounded-full w-full md:w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
             {...register('newPassword')}
             autoComplete='newPassword'
           />
@@ -90,7 +90,7 @@ const ChangePassword = () => {
           <label className='block mb-2.5'>Xác nhận lại mật khẩu *</label>
           <input
             type='password'
-            className='px-6 py-3 rounded-full w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
+            className='px-6 py-3 rounded-full w-full md:w-[408px] border-borderColor border focus:outline-none focus:border-primaryColor'
             {...register('confirmNewPassword')}
             autoComplete='confirmNewPassword'
           />
